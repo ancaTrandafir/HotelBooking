@@ -7,6 +7,8 @@ namespace HotelBooking.ViewModels
 {
 	public class PaginatedList<T>
 	{
+		public List<T> Items { get; set; }
+
 		public int CurrentPage { get; private set; }
 		public int TotalPages { get; private set; }
 		public int PageSize { get; private set; }
@@ -17,28 +19,29 @@ namespace HotelBooking.ViewModels
 
 
 
-		public PaginatedList(List<T> items, int count, int pageNumber, int pageSize)
+		public PaginatedList(int count, int pageNumber, int pageSize)
 		{
 			TotalCount = count;
 			PageSize = pageSize;
 			CurrentPage = pageNumber;
 			TotalPages = (int)Math.Ceiling(count / (double)pageSize);
 
-			items.AddRange(items);
+			// items.AddRange(items);
+			Items = new List<T>();
 		}
 
-		public static PaginatedList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
-		{
+		//public static PaginatedList<T> ToPagedList(IQueryable<T> source, int pageNumber, int pageSize)
+		//{
 
-			// Say we need to get the results for the third page of our website, counting 20 as the number of results we want. 
-			// That would mean we want to skip the first ((3 – 1) * 20) = 40 results, 
-			// and then take the next 20 and return them to the caller.
+		//	// Say we need to get the results for the third page of our website, counting 20 as the number of results we want. 
+		//	// That would mean we want to skip the first ((3 – 1) * 20) = 40 results, 
+		//	// and then take the next 20 and return them to the caller.
 
-			var count = source.Count();
-			var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+		//	var count = source.Count();
+		//	var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
 
-			return new PaginatedList<T>(items, count, pageNumber, pageSize);
-		}
+		//	return new PaginatedList<T>(count, pageNumber, pageSize);
+		//}
 	}
 }
 	

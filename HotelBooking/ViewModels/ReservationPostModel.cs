@@ -1,5 +1,5 @@
 ﻿using HotelBooking;
-using MoviesAPI.Models;
+using HotelBooking.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

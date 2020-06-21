@@ -8,9 +8,9 @@ namespace HotelBooking.Models
     public class PagingParameters
     {
 		const int maxPageSize = 50;
-		public int PageNumber { get; set; } = 1;
+		public int PageNumber { get; set; }  = 0;
 
-		private int _pageSize = 10;
+		private int _pageSize = 5;
 		public int PageSize
 		{
 			get
@@ -29,6 +29,6 @@ namespace HotelBooking.Models
 
 // We are using constant maxPageSize to restrict our API to a maximum of 50 owners.
 // We have two public properties – PageNumber and PageSize.
-// If not set by the caller, PageNumber will be set to 1, and PageSize to 10.
+// If not set by the caller, PageNumber will be set to 0, and PageSize to 10.
 
 // In service, la getMovies, adaugam parametru PagingParameters

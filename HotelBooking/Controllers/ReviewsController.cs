@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 
-namespace MoviesAPI.Controllers
+namespace HotelBooking.Controllers
 {
     [Route("[controller]")]
     [ApiController]
@@ -22,14 +22,14 @@ namespace MoviesAPI.Controllers
             _context = context;
         }
 
-        
 
-        
-        // GET: /Reviews
+
+
+        // GET: /reviews
         /// <summary>
-        /// 
+        /// Retrieves a list of all reviews from DB.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>List of reviews.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
         {
@@ -40,8 +40,12 @@ namespace MoviesAPI.Controllers
 
 
 
-
-        // GET: /Reviews/5
+        /// <summary>
+        /// Retrieves a specific review by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Returns the  specified review by id.</returns>
+        // GET: /reviews/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReviews(int id)
         {
@@ -59,8 +63,13 @@ namespace MoviesAPI.Controllers
 
 
 
-
-        // PUT: Reviews/5
+        /// <summary>
+        /// Edit any properties of a specific review you mention by id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="review"></param>
+        /// <returns></returns>
+        // PUT: reviews/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
@@ -96,7 +105,25 @@ namespace MoviesAPI.Controllers
 
 
 
-        // POST: /Reviews
+        /// <summary>
+        /// Creates a new review.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /review
+        ///          {
+        ///            "MovieId": 2,
+        ///            "Text": "Awesome view to the ocean.",
+        ///            "Rating": 9.5
+        ///           }
+        ///
+        /// </remarks>
+        /// <param name="review"></param>
+        /// <returns>A newly created review.</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response> 
+        // POST: /reviews
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
@@ -113,7 +140,12 @@ namespace MoviesAPI.Controllers
 
 
 
-        // DELETE: /Reviews/5
+        /// <summary>
+        /// Deletes a specific review.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Returns the deleted review.</returns>
+        // DELETE: /reviews/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Review>> DeleteReview(int id)
         {

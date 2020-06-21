@@ -1,0 +1,39 @@
+<h2 class="text-center">Update hotel "{{service.formDataHotel.HotelName}}"</h2>
+<br>
+
+<form #formMovie="ngForm" autocomplete="on" (submit)="onSubmit(formHotel)">
+
+    <input type="hidden" name="Id" [value]="service.formDataHotel.Id">
+
+    <div class="form-group">
+        <div class="input-group">
+            <input name="HotelName" #HotelName="ngModel" [(ngModel)]="service.formDataHotel.HotelName" type="text" class="form-control" placeholder="HotelName" required maxlength="50" minlength="3">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <input name="City" #City="ngModel" [(ngModel)]="service.formDataHotel.City" type="text" class="form-control" placeholder="City" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="input-group">
+            <input name="Capacity" #Capacity="ngModel" [(ngModel)]="service.formDataHotel.Capacity" type="number" class="form-control" placeholder="Capacity" required>
+        </div>
+    </div>
+
+   
+
+    <div class="form-group">
+        <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formHotel.invalid">
+            Submit
+        </button>
+    </div>
+
+
+</form>
+
+
+
+

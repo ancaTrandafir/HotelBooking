@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Movies.Models;
 
 namespace HotelBooking
 {
@@ -24,7 +25,7 @@ namespace HotelBooking
                         try
                         {
                             var context = services.GetRequiredService<BookingsDbContext>();
-                         //   BookingsDbSeeder.Initialize(context);
+                            BookingsDbSeeder.Initialize(context);
                             var contextIdentity = services.GetRequiredService<BookingsDbContext>();
                         }
                         catch (Exception ex)

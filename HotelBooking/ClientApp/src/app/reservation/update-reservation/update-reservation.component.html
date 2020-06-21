@@ -1,0 +1,68 @@
+<h2 class="text-center">Update reservation ID "{{service.formDataReservation.Id}}"</h2>
+<br>
+
+<form #formReservation="ngForm" autocomplete="on" (submit)="onSubmit(formReservation)">
+
+  <input type="hidden" name="Id" [value]="service.formDataReservation.Id">
+  <input type="hidden" name="userId" [value]="service.formDataReservation.userId">
+  <input type="hidden" name="hotelId" [value]="service.formDataReservation.hotelId">
+
+  <div class="form-group">
+    <div class="input-group">
+      <input name="Guest" #Title="ngModel" [(ngModel)]="service.formDataReservation.Guest" type="text" class="form-control" placeholder="Guest" required maxlength="50" minlength="3">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <input name="NoOfPersons" #Description="ngModel" [(ngModel)]="service.formDataReservation.NoOfPersons" type="number" class="form-control" placeholder="Number of persons" minlength="1" maxlength="3" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <label>Arrival date: </label>
+      <input name="ArrivalDate" #ArrivalDate="ngModel" [(ngModel)]="service.formDataReservation.ArrivalDate" type="date" class="form-control" placeholder="Arrival date" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <label>Departure date: </label>
+      <input name="DepartureDate" #DepartureDate="ngModel" [(ngModel)]="service.formDataReservation.DepartureDate" type="date" class="form-control" placeholder="Departure date" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <label for="RoomType">Room type: </label>
+      <select id="roomtype " form="RoomType" name="RoomType" #RoomType="ngModel" [(ngModel)]="service.formDataReservation.RoomType" type="text" class="form-control" placeholder="Room type" required>
+        <option value="Economy">Economy</option>
+        <option value="Balcony">Balcony</option>
+        <option value="Seaview">Seaview</option>
+        <option value="Deluxe">Deluxe</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="input-group">
+      <label for="BreakfastIncluded">Breakfast: </label>
+      <input name="BreakfastIncluded" #Watched="ngModel" [(ngModel)]="service.formDataReservation.BreakfastIncluded" class="form-control" type="radio" value="true">
+      <label for="BreakfastIncluded">No breakfast: :</label>
+      <input name="BreakfastIncluded" #Watched="ngModel" [(ngModel)]="service.formDataReservation.BreakfastIncluded" class="form-control" type="radio" value="false">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formReservation.invalid">
+      Submit
+    </button>
+  </div>
+
+
+</form>
+
+
+
+

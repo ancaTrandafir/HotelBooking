@@ -1,0 +1,29 @@
+<h2 class="text-center">List of users</h2>
+<br>
+
+
+    <table class="table table-hover">
+
+        <thead class="thead-dark">
+            <tr>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+
+
+        <tr *ngFor="let u of users">
+
+            <td>{{u.FirstName}}</td>
+            <td>{{u.LastName}}</td>
+            <td>{{u.Email}}</td>
+
+        </tr>
+
+    </table>
+
+
+
+
+

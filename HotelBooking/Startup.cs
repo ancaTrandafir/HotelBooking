@@ -1,14 +1,22 @@
 using AutoMapper;
+using FluentValidation.AspNetCore;
+using HotelBooking.Helpers;
+using HotelBooking.Models;
+using HotelBooking.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace HotelBooking
@@ -31,10 +39,11 @@ namespace HotelBooking
         {
             
             services.AddControllersWithViews();
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "ClientApp/dist";
+                configuration.RootPath = "wwwroot/dist";
             });
 
 
@@ -66,6 +75,14 @@ namespace HotelBooking
 
 
 
+            // https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences
+            // configure DI (Dependency Injection) for application services
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IReservationService, ReservationService>();
+            services.AddScoped<IHotelService, HotelService>();
+
+
+
             services
                 .AddControllers()
 
@@ -87,19 +104,46 @@ namespace HotelBooking
             // Add EF services to the services container.
             services.AddDbContext<BookingsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));  
 
-            services.AddCors(); // Cross origins between Angular and API
+           services.AddCors(); // Cross origins between Angular and API
 
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());  // AutoMapper din Nuget
 
 
-            // https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences
-            // configure DI (Dependency Injection) for application services
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IMovieService, MovieService>();
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "My Movies API",
+                    Description = "A simple example ASP.NET Core Web Movies API",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Anca Trandafir",
+                        Email = "anca.trandafir@ymail.com",
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+
+            });
 
 
         }
+
+
+
 
 
 
@@ -111,7 +155,7 @@ namespace HotelBooking
             app.UseAuthentication();
 
 
-            // Configurations to consume the Web API from Port 4200 (Angular App)
+          ///  Configurations to consume the Web API from Port 4200(Angular App)
             app.UseCors(options =>
              options.WithOrigins("http://localhost:4200")        // Angular URL
                 .AllowAnyMethod()

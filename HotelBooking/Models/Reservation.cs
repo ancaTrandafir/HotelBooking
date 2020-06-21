@@ -1,4 +1,4 @@
-using MoviesAPI.Models;
+using HotelBooking.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;

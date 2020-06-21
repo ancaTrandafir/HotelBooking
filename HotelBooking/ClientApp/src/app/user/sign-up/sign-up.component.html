@@ -1,0 +1,39 @@
+
+        <form class="col s12 white" #userRegistrationForm="ngForm" (ngSubmit)="onSubmit(userRegistrationForm)">
+
+          <div class="row">
+
+            <input type="hidden" name="Id" [value]="user.Id">
+
+            <div class="input-field col s6">
+              <input class="validate" type="text" name="Username" #UserName="ngModel" [(ngModel)]="user.Username" placeholder="Username" required>
+              <label data-error="Required field!">Username</label>
+            </div>
+            <div class="input-field col s6">
+              <input class="validate" type="password" name="Password" #Password="ngModel" [(ngModel)]="user.Password" placeholder="Password" required minlength="3">
+              <label [attr.data-error]="Password.errors!=null?(Password.errors.required?'Required field!':'Minimum 3 characters needed'):''">Password</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input class="validate" type="text" name="Email" #Email="ngModel" [(ngModel)]="user.Email" [pattern]="emailPattern" placeholder="E-mail">
+              <label data-error="Invalid email!">Email</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s6">
+              <input type="text" name="FirstName" #FirstName="ngModel" [(ngModel)]="user.FirstName" placeholder="First name" required>
+              <label data-error="Required field!">First name</label>
+            </div>
+            <div class="input-field col s6">
+              <input type="text" name="LastName" #LastName="ngModel" [(ngModel)]="user.LastName" placeholder="Last name" required>
+              <label data-error="Required field!">Last name</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <button [disabled]="!userRegistrationForm.valid" class="btn-large btn-submit" type="submit">Submit</button>
+            </div>
+          </div>
+        </form>
+ 

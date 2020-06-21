@@ -12,9 +12,10 @@ namespace HotelBooking.Services
 {
     public interface IReservationService
     {
-        PaginatedList<ReservationGetModel> GetReservationsPaginated(PagingParameters pagingParameters);
+       // PaginatedList<ReservationGetModel> GetReservationsPaginated(PagingParameters pagingParameters);
         IEnumerable<ReservationGetModel> GetReservations();
         IEnumerable<ReservationGetModel> FilterByDate(string from, string to);
+        IQueryable<ReservationGetModel> FilterByUserId(string id);
         Reservation GetReservationById(long id);
         Reservation Create(ReservationPostModel reservation);
         Reservation Update(long id, Reservation reservation);
@@ -70,22 +71,6 @@ namespace HotelBooking.Services
 
 
 
-        public PaginatedList <ReservationGetModel> GetReservationsPaginated(PagingParameters pagingParameters)
-        {
-            var result = context.Reservations
-                .OrderBy(r => r.ArrivalDate);
-
-            return PaginatedList<ReservationGetModel>.ToPagedList(result.Select(r => ReservationGetModel.GetReservationModel(r, context)), pagingParameters.PageNumber, pagingParameters.PageSize);
-
-            
-        }
-
-
-
-
-
-
-
 
 
 
@@ -95,7 +80,7 @@ namespace HotelBooking.Services
         {
             IQueryable<Reservation> result = context.Reservations;
 
-            return result.Select(m => ReservationGetModel.GetReservationModel(m, context));
+            return result.Select(r => ReservationGetModel.GetReservationModel(r, context));
         }
 
 
@@ -165,5 +150,23 @@ namespace HotelBooking.Services
 
 
 
+
+
+
+
+
+        public IQueryable<ReservationGetModel> FilterByUserId(string id)
+        {
+            long userId = long.Parse(id);
+
+            IQueryable<Reservation> reservations = context.Reservations
+                .Where(r => r.UserId == userId);
+
+            var query =  reservations
+                .OrderBy(r => r.ArrivalDate);
+
+            return query.Select(r => ReservationGetModel.GetReservationModel(r, context));
+
+        }
     }
 }

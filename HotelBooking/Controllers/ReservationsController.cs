@@ -12,14 +12,13 @@ using Microsoft.Extensions.Logging;
 using MoviesAPI.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MoviesAPI.Models;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
 using HotelBooking.Services;
 using HotelBooking;
 using HotelBooking.ViewModels;
 
-namespace MoviesAPI.Controllers
+namespace HotelBooking.Controllers
 {
     [Authorize]
     [Produces("application/json")]
@@ -229,6 +228,28 @@ namespace MoviesAPI.Controllers
 
 
 
+
+
+
+
+        /// <summary>
+        /// Retrieves filtered reservations by id of user that added it.
+        /// </summary>
+        /// <remarks>
+        /// Sample URL request:
+        ///    https://localhost:44331/reservations/filter?userId=2
+        /// Sample parameter: 2  
+        /// </remarks>
+        /// <param name="userId"></param>
+        /// <returns>A list of reservations with arrivalDate and departureDate between the two specified dates.</returns>
+        // GET: reservations/filter?from=a&to=b
+        [AllowAnonymous]
+        [HttpGet("filter")]
+        public IEnumerable<ReservationGetModel> GetFilteredReservations(
+            [FromQuery] string userId )
+        {
+            return reservationService.FilterByUserId(userId);
+        }
 
     }
 }
