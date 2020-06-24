@@ -119,11 +119,11 @@
             </summary>
             <remarks>
             Sample URL request:
-               https://localhost:44331/reservations/filter?userId=2
+               https://localhost:44335/reservations/filter?userId=2
             Sample parameter: 2  
             </remarks>
             <param name="userId"></param>
-            <returns>A list of reservations with arrivalDate and departureDate between the two specified dates.</returns>
+            <returns>A list of reservations made by a specific user.</returns>
         </member>
         <member name="M:HotelBooking.Controllers.ReviewsController.GetReviews">
             <summary>
@@ -173,8 +173,6 @@
             <param name="id"></param>
             <returns>Returns the deleted review.</returns>
         </member>
-        <member name="M:HotelBooking.ViewModels.HotelGetModel.GetHotelModel(HotelBooking.Hotel,HotelBooking.Models.BookingsDbContext)">
-            public int NoOfReviews { get; set; }
-        </member>
+        <!-- Badly formed XML comment ignored for member "M:HotelBooking.Controllers.UsersAtHotelsController.GetCountOfUsersByIDHotel(System.Int64)" -->
     </members>
 </doc>

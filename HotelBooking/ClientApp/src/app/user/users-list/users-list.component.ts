@@ -2,6 +2,9 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { UserService } from '../shared/user.service';
 import { User } from '../shared/user.model';
 import { AuthService, SocialUser } from 'angularx-social-login';
+import { HotelService } from '../../hotel/shared/hotel.service';
+import { Hotel } from '../../hotel/shared/hotel.model';
+import { UserAtHotel } from '../shared/userAtHotel';
 
 
 
@@ -13,30 +16,35 @@ import { AuthService, SocialUser } from 'angularx-social-login';
 export class UsersListComponent implements OnInit {
 
     private users: any[];
+    private hotelList: Hotel[];
     private currentUser: any;
     readonly rootURL = "https://localhost:44331";
 
 
 
-  constructor(private service: UserService) { }
+  constructor(private userService: UserService,
+              private hotelService: HotelService) { }
 
 
 
   ngOnInit() {
-    this.currentUser = this.service.currentUserSubject;
+    this.currentUser = this.userService.currentUserValue;
+    console.log(this.currentUser);
     this.getUsers();
+    this.getHotels();
+    console.log(this.getHotels);
     }
 
 
 
 
     getUsers() {
-        this.service.getUsers()
+        this.userService.getUsers()
             // .subscribe(data => this.users = data);
             .toPromise()
             .then(data => {
                 this.users = data;
-                console.log(data);
+                console.log(this.users);
                 
             });
     }
@@ -45,7 +53,24 @@ export class UsersListComponent implements OnInit {
 
 
 
-  
+
+
+  getHotels() {
+    this.hotelService.getHotels()
+      // .subscribe(data => this.users = data);
+      .toPromise()
+      .then(data => {
+        this.hotelList = data;
+        console.log(data);
+
+      });
+  }
+
+
+
+
+
+
 
 }
 

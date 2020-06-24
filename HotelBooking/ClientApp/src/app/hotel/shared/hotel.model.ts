@@ -5,6 +5,7 @@ export class Hotel {
   City: string;
   Capacity: number;
   Rating: number;
+  CountUser: number;
  
 }
 

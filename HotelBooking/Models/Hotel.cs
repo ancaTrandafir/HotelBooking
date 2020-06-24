@@ -17,6 +17,7 @@ namespace HotelBooking
         public double Rating { get; set; }
         [JsonIgnore]       
         public List<Review> Reviews{ get; set; }
+        
 
     }
 }

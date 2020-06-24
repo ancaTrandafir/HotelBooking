@@ -14,7 +14,7 @@ namespace HotelBooking.ViewModels
         public string City { get; set; }
         public int Capacity { get; set; }
         public double Rating{ get; set; }
-        ///public int NoOfReviews { get; set; }
+        public int UserCount { get; set; }
 
 
 
@@ -27,16 +27,12 @@ namespace HotelBooking.ViewModels
                 HotelName = hotel.HotelName,
                 City = hotel.City,
                 Capacity = hotel.Capacity,
-
-
                 Rating = hotel.Rating,
 
-                //Rating = context.Reviews
-                //       // .FirstOrDefault(r => hotel.Id == r.HotelId)
-                //        .Where(r => hotel.Id == r.HotelId)
-                //        .Average(r => r.Rating),
+                UserCount = context.UsersAtHotels
+                        .Where(u => hotel.Id == u.HotelId)
+                        .Count()
 
-             //   NoOfReviews = hotel.Reviews.Count
             };
         }
 

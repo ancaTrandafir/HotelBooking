@@ -108,7 +108,8 @@ export class AddHotelComponent implements OnInit {
                         HotelName: '',
                         City: '',
                         Capacity: null,
-                        Rating: null
+                        Rating: null,
+                        CountUser: null
                     }
            
     }

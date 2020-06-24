@@ -16,6 +16,7 @@ namespace HotelBooking.Models
         public DbSet<Review> Reviews{ get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserAtHotel> UsersAtHotels{ get; set; }
 
     }
 }

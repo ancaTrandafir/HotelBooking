@@ -80,4 +80,15 @@ export class HotelService {
   }
 
 
+
+
+
+
+
+
+
+  getHotelById(id) {
+    return this.http.get<Hotel>(this.rootURL + '/hotels/' + id);
+  }
+
 }

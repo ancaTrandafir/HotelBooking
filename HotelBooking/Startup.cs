@@ -117,7 +117,7 @@ namespace HotelBooking
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "My Movies API",
+                    Title = "My Bookings API",
                     Description = "A simple example ASP.NET Core Web Movies API",
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
@@ -176,7 +176,7 @@ namespace HotelBooking
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("./v1/swagger.json", "My Bookings API V1");
             });
 
 
@@ -190,6 +190,7 @@ namespace HotelBooking
             {
                 endpoints.MapControllers();
             });
+
 
             app.UseSpa(spa =>
             {

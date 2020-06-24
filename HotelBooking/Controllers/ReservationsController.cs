@@ -237,14 +237,14 @@ namespace HotelBooking.Controllers
         /// </summary>
         /// <remarks>
         /// Sample URL request:
-        ///    https://localhost:44331/reservations/filter?userId=2
+        ///    https://localhost:44335/reservations/filter?userId=2
         /// Sample parameter: 2  
         /// </remarks>
         /// <param name="userId"></param>
-        /// <returns>A list of reservations with arrivalDate and departureDate between the two specified dates.</returns>
-        // GET: reservations/filter?from=a&to=b
+        /// <returns>A list of reservations made by a specific user.</returns>
+        // GET: reservations/filter?userId=2
         [AllowAnonymous]
-        [HttpGet("filter")]
+        [HttpGet("filterByUser")]
         public IEnumerable<ReservationGetModel> GetFilteredReservations(
             [FromQuery] string userId )
         {
