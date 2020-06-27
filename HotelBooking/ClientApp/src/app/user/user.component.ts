@@ -15,7 +15,7 @@ export class UserComponent implements OnInit {
 
   //create array to store user data we need
   userData: any[] = [];
-  // create a field to hold error messages so we can bind it to our        template
+  // create a field to hold error messages so we can bind it to our template
   resultMessage: string;
 
 
@@ -57,7 +57,7 @@ export class UserComponent implements OnInit {
           Email: response.email,
         //  Username: response.name,
           PictureURL: response.photoUrl,
-        //  Token: response.authToken // creez propriul JWT token in API
+          Token: response.authToken // creez propriul JWT token in API
 
         });
 

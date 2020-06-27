@@ -25,10 +25,6 @@
             <a class="nav-link text-dark" [routerLink]="['/fetch-hotels']">Fetch hotels</a>
           </li>
 
-          <li *ngIf="(userLoggedIn != null) || (FBLoggedIn == true)" class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/add-reservation']">Add reservation</a>
-          </li>
-
           <li *ngIf="userLoggedIn != null">
             <a (click)="Logout()">
               <h6>{{userLoggedIn.Username}}</h6>

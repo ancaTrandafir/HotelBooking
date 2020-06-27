@@ -10,6 +10,7 @@ namespace HotelBooking.ViewModels
     {
 
         public long Id { get; set; }
+        public long UserId { get; set; }
         public string Guest { get; set; }
         public int NoOfPersons { get; set; }
         public DateTime ArrivalDate { get; set; }
@@ -28,6 +29,7 @@ namespace HotelBooking.ViewModels
             return new ReservationGetModel       
             {
                 Id = reservation.Id,
+                UserId = reservation.UserId,
                 Guest = reservation.Guest,
                 NoOfPersons = reservation.NoOfPersons,
                 ArrivalDate = reservation.ArrivalDate,

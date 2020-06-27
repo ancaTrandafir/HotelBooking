@@ -72,6 +72,7 @@
             <returns>Returns the reservation specified by id.</returns>
         </member>
         <!-- Badly formed XML comment ignored for member "M:HotelBooking.Controllers.ReservationsController.GetFilteredReservations(System.String,System.String)" -->
+        <!-- Badly formed XML comment ignored for member "M:HotelBooking.Controllers.ReservationsController.GetUserFilteredReservations(System.String,System.String,System.String)" -->
         <member name="M:HotelBooking.Controllers.ReservationsController.PutReservation(System.Int64,HotelBooking.Reservation)">
             <summary>
             Edit any properties of a specific reservation you mention by id.
@@ -90,7 +91,8 @@
             
                  POST /reservations
                   {
-                     "HotelId": 1,
+                     "HotelId": 6,
+                     "UserId": 2,
                      "Guest": "Anca Trandafir",
                      "NoOfPersons": 1,
                      "ArrivalDate": "2020-09-10",

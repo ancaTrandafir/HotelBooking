@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace HotelBooking.Models
 {
+
     public class User 
     {
         public long Id { get; set; }
@@ -20,9 +21,12 @@ namespace HotelBooking.Models
         [JsonIgnore]
         public byte[] PasswordSalt { get; set; }
         public string Token { get; set; }
+        public string Role { get; set; }
         [JsonIgnore]
         public List<Review> Reviews{ get; set; }
         [JsonIgnore] 
         public List<Reservation> Reservations{ get; set; }
+
+       
     }
 }

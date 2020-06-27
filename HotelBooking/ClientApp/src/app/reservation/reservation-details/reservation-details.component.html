@@ -1,101 +1,32 @@
 
-<h2 class="text-center">Details for {{movieCommService.selectedMovie.Title}}</h2>
+<h3 class="text-center">Details for the selected reservation</h3>
 <br>
 
-<label>Id: {{movieCommService.selectedMovie.Id}}</label>
+<label>Id: {{selectedReservation.Id}}</label>
 <br>
-<label>Title: {{movieCommService.selectedMovie.Title}}</label>
+<label>Hotel name: {{selectedReservation.Hotel.HotelName}}</label>
 <br>
-<label>Description: {{movieCommService.selectedMovie.Description}}</label>
+<label>City: {{selectedReservation.Hotel.City}}</label>
 <br>
-<label>Genre: {{movieCommService.selectedMovie.Genre}}</label>
+<label>Guest name: {{selectedReservation.Guest}}</label>
 <br>
-<label>Duration: {{movieCommService.selectedMovie.Duration}}</label>
+<label>Number of persons: {{selectedReservation.NoOfPersons}}</label>
 <br>
-<label>Year of release: {{movieCommService.selectedMovie.YearOfRelease}}</label>
+<label>Arrival date: {{selectedReservation.ArrivalDate | date: 'yyyy-MM-dd'}}</label>
 <br>
-<label>Director: {{movieCommService.selectedMovie.Director}}</label>
+<label>Departure date: {{selectedReservation.DepartureDate | date: 'yyyy-MM-dd'}}</label>
 <br>
-<label>Date added: {{movieCommService.selectedMovie.DateAdded | date: 'yyyy-MM-dd'}}</label>
+<label>Room type: {{selectedReservation.RoomType}}</label>
 <br>
-<label>Rating: {{movieCommService.selectedMovie.Rating}}</label>
-<br>
-<label>Watched: {{movieCommService.selectedMovie.Watched}}</label>
-<br>
-<label>Added by user: {{movieCommService.selectedMovie.AddedBy.FirstName}}</label>
-<br>
-<h3>Comments:</h3>
-
-<table class="table table-hover">
-
-  <thead class="thead-dark">
-    <tr>
-      <th>Id</th>
-      <th>Text</th>
-      <th>Important</th>
-    </tr>
-  </thead>
-
-
-  <tr *ngFor="let c of copyOfSelectedComment.Comments">
-    <td>{{c.Id}}</td>
-    <td>{{c.Text}}</td>
-    <td>{{c.Important}}</td>
-    <td (click)="onDelete(c.Id)"> Delete</td>
-    <td (click)="populateForm(c)"> Update</td>
-  </tr>
-
-
-
-  <!--
-  <ng-container *ngFor="let c of comments">        iterez prin comments adica apelez get din controller de Comm
-  Nu pot avea ngFor si ngIf in acelasi element; creez un ng-container, care nu afecteaza DOM
-  <tr *ngIf="c.movieID == movieService.selectedMovie.Id">
-      <td>{{c.Id}}</td>
-      <td>{{c.Text}}</td>
-      <td>{{c.Important}}</td>
-      <td (click)="onDelete(c.id)"> Delete</td>
-      <td (click)="onUpdate(c.id)"> Update</td>
-  </tr>
-  </ng-container>
-  -->
-
-
-
-
-
-
-</table>
-
-
+<label>Breakfast included: {{selectedReservation.BreakfastIncluded}}</label>
 <br>
 <br>
-<h3>Add comment:</h3>
+
+
+
+<button type="button" class="btn btn-success" [routerLink]="['/update-reservation/' + reservationService.selectedReservation.Id]" (click)="updateBtnClicked()"><i class="fas fa-edit"></i>
+        Edit this reservation</button>
 <br>
-<form #formComment="ngForm" (submit)="onSubmit(formComment)">
-
-  <input type="hidden" name="Id" [value]="commentService.formDataComm.Id">
-
-  <div class="input-group">
-    <textarea name="Text" #Text="ngModel" [(ngModel)]="commentService.formDataComm.Text" type="text" class="form-control" placeholder="Text" rows="5" cols="50" required></textarea>
-  </div>
-  <br>
-  <div class="input-group">
-    <label for="Important">Important: </label>
-    <input name="Important" #Important="ngModel" [(ngModel)]="commentService.formDataComm.Important" class="form-control" type="radio" value="true">
-    <label for="Important">Not important: </label>
-    <input name="Important" #Important="ngModel" [(ngModel)]="commentService.formDataComm.Important" class="form-control" type="radio" value="false">
-  </div>
-  <br>
-  <div class="input-group">
-    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formComment.invalid">
-      Add comment
-    </button>
-  </div>
-
-</form>
-
-<br>
-<button (click)="goBack()">Back</button>
+<button type="button" class="btn" (click)="goBack()">Back</button>
 
 

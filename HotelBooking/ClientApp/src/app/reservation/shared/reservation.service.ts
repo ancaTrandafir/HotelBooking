@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Observable, of } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { Reservation } from './reservation.model';
+import { HotelService } from '../../hotel/shared/hotel.service';
+import { Hotel } from '../../hotel/shared/hotel.model';
 
 
 @Injectable({
@@ -14,21 +16,21 @@ export class ReservationService {
   readonly rootURL = "https://localhost:44331";
   public formDataReservation: Reservation;
   public selectedReservation: Reservation;
-  public updateBtnReservationClicked = false;  
-  public idCopied: number;  
+  public idCopied: number;  // copiez id sa pot apela la update pt ca voi redefini id ca undefined intre timp
   reservationList: Reservation[];
 
 
   constructor(private http: HttpClient,
-              public toastr: ToastrService ) { }
+    public toastr: ToastrService,
+    private hotelService: HotelService) { }
 
 
 
 
   postReservation() {
     console.log(this.formDataReservation);
-    return this.http.post(this.rootURL + '/reservations', this.formDataReservation);  
-    
+    return this.http.post(this.rootURL + '/reservations', this.formDataReservation);
+
   }
 
 
@@ -37,7 +39,7 @@ export class ReservationService {
 
   getReservations() {
     return this.http.get<Reservation[]>(this.rootURL + '/reservations');
-     
+
   }
 
 
@@ -55,9 +57,12 @@ export class ReservationService {
 
 
 
-  updateReservation(formData: Reservation) {
-    return this.http.put(this.rootURL + '/reservations/' + formData.Id, this.formDataReservation);
+  updateReservation(formData) {
 
+    console.log(formData);
+
+    return this.http.put(this.rootURL + '/reservations/' + this.idCopied, formData);
+      // in idCopied e copiata valoarea id caruia i se face update; daca zic this.formData.Id e undefined pt ca l-am resetat in Add-Movie
   }
 
 
@@ -65,8 +70,8 @@ export class ReservationService {
 
 
   deleteReservation(id) {
-    return this.http.delete(this.rootURL + '/reservations/' + id);  
-    
+    return this.http.delete(this.rootURL + '/reservations/' + id);
+
   }
 
 
@@ -74,7 +79,7 @@ export class ReservationService {
 
   // GET: reservations/filter?from=a&to=b
   filterReservationsByDate(from, to) {
-    return this.http.get<Reservation[]>(this.rootURL + '/reservations/filter?from=' + from + '&to=' + to);
+    return this.http.get<Reservation[]>(this.rootURL + '/reservations/byDates?from=' + from + '&to=' + to);
   }
 
 
@@ -84,7 +89,32 @@ export class ReservationService {
 
   // GET: reservations/filter?userId=a
   filterReservationsByUserId(userId) {
-    return this.http.get<Reservation[]>(this.rootURL + '/reservations/filter?userId=' + userId);
+    return this.http.get<Reservation[]>(this.rootURL + '/reservations/byUser?userId=' + userId);
+  }
+
+
+
+  // GET: reservations/filter?userId=a&from=b&to=c
+  filterReservationsByUserAndDate(userId, from, to) {
+    return this.http.get<Reservation[]>(this.rootURL + '/reservations/byUserAndDates?userId=' + userId + '&from=' + from + '&to=' + to);
+  }
+
+
+
+
+
+  public getHotelFromReservationSelected() {
+
+    console.log(this.selectedReservation.HotelId);
+
+    this.hotelService.getHotelById(this.selectedReservation.HotelId)
+      .toPromise()
+      .then(response => {
+        this.selectedReservation.Hotel = response as Hotel;
+        console.log(this.selectedReservation.Hotel);
+      });
+
+    return this.selectedReservation.Hotel;
   }
 
 

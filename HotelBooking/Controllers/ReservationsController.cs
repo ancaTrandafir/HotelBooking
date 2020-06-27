@@ -20,7 +20,7 @@ using HotelBooking.ViewModels;
 
 namespace HotelBooking.Controllers
 {
-    [Authorize]
+    
     [Produces("application/json")]
     [ApiController]
     [Route("[controller]")]
@@ -73,7 +73,7 @@ namespace HotelBooking.Controllers
         /// Retrieves a list of all reservations from DB.
         /// </summary>
         /// <returns>List of reservations</returns>
-        // GET: /R
+        // GET: /reservations
         [AllowAnonymous]
         [HttpGet]
         public IActionResult GetReservations()
@@ -95,7 +95,6 @@ namespace HotelBooking.Controllers
         /// <param name="id"></param>
         /// <returns>Returns the reservation specified by id.</returns>
         // GET: reservations/5
-        [AllowAnonymous]
         [HttpGet("{id}")]
         public Reservation GetReservationById(long id)
         {
@@ -119,14 +118,49 @@ namespace HotelBooking.Controllers
         /// <param name="to"></param>
         /// <returns>A list of reservations with arrivalDate and departureDate between the two specified dates.</returns>
         // GET: reservations/filter?from=a&to=b
-        [AllowAnonymous]
-        [HttpGet("filter")]
+        [HttpGet("byDates")]
         public IEnumerable<ReservationGetModel> GetFilteredReservations(
             [FromQuery] string from,
             [FromQuery] string to)
         {
             return reservationService.FilterByDate(from, to);
         }
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// Retrieves filtered reservations, added between certain dates, also ordered by hotel.
+        /// </summary>
+        /// <remarks>
+        /// Sample URL request:
+        ///    https://localhost:44331/reservations/filterByUser?userId=1&from=2020-05-15T00:00:00&to=2020-05-17T00:00:00
+        /// Sample parameter: yyyy-MM-dd   
+        /// </remarks>
+        /// <param name="userId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <returns>A list of reservations with arrivalDate and departureDate between the two specified dates.</returns>
+        // GET: reservations/filter?from=a&to=b
+        [HttpGet("byUserAndDates")]
+        public IEnumerable<ReservationGetModel> GetUserFilteredReservations(
+            [FromQuery] string userId,
+            [FromQuery] string from,
+            [FromQuery] string to)
+        {
+            return reservationService.FilterByUserAndDate(userId, from, to);
+        }
+
+
+
+
+
 
 
 
@@ -165,7 +199,8 @@ namespace HotelBooking.Controllers
         ///
         ///     POST /reservations
         ///      {
-        ///         "HotelId": 1,
+        ///         "HotelId": 6,
+        ///         "UserId": 2,
         ///         "Guest": "Anca Trandafir",
         ///         "NoOfPersons": 1,
         ///         "ArrivalDate": "2020-09-10",
@@ -244,7 +279,7 @@ namespace HotelBooking.Controllers
         /// <returns>A list of reservations made by a specific user.</returns>
         // GET: reservations/filter?userId=2
         [AllowAnonymous]
-        [HttpGet("filterByUser")]
+        [HttpGet("byUser")]
         public IEnumerable<ReservationGetModel> GetFilteredReservations(
             [FromQuery] string userId )
         {

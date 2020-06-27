@@ -5,7 +5,7 @@
       <div class="col s12 m7">
         <div class="card">
           <div class="card-content">
-            <span> Welcome, {{userLoggedIn.FirstName}}</span>
+            <span> Welcome, {{userLoggedIn.FirstName}}!</span>
           </div>
         </div>
       </div>
@@ -13,15 +13,17 @@
   </div>
 
   <div class="container">
-      <div class="col s8 offset-s2">
-        <img src="{{ userLoggedIn.PictureURL }}">
-        <div>
-          <p>{{ userLoggedIn.Email }}</p>
-        </div>
-       </div>
+    <div class="col s8 offset-s2">
+      <img src="{{ userLoggedIn.PictureURL }}">
+      <div>
+        <p>{{ userLoggedIn.Email }}</p>
       </div>
+    </div>
+    <p>Your role permission is: {{ userLoggedIn.Role }}</p>
+  </div>
   <br>
+  <br>
+  <button type="button" class="btn btn-info" (click)="fetchReservationsForId(userLoggedIn.Id)">My reservations</button>
 
-  <app-users-list></app-users-list>
 
 </body>

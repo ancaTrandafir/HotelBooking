@@ -24,7 +24,6 @@
       <th>Hotel</th>
       <th>ArrivalDate</th>
       <th>DepartureDate</th>
-      <th>User</th>
       <th>Operations</th>
     </tr>
   </thead>
@@ -33,12 +32,11 @@
   <tr *ngFor="let r of reservationList">
  
     <td (click)="populateForm(r)">{{r.Id}}</td>  
-    <td (click)="populateForm(r)">{{r.Hotel}}</td>
+    <td (click)="populateForm(r)">{{r.Hotel.HotelName}}</td>
     <td (click)="populateForm(r)">{{r.ArrivalDate | date: 'yyyy-MM-dd'}}</td>
     <td (click)="populateForm(r)">{{r.DepartureDate | date: 'yyyy-MM-dd'}}</td>
-    <td (click)="populateForm(r)">{{r.User}}</td>
     <td>
-      <a [routerLink]="['/details', r.Id]" routerLinkActive="active"> Details</a>
+      <a [routerLink]="['/reservation-details', r.Id]" routerLinkActive="active"> Details</a>
       <i class="far fa-trash-alt fa-lg text-danger" (click)="onDelete(r.Id)"></i>
     </td>
   </tr>

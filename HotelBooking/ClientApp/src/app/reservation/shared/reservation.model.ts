@@ -12,6 +12,7 @@ export class Reservation {
   RoomFare: number;
   BreakfastIncluded: boolean;
   UserId: number;
+  HotelId: number;
   User: User
 }
 

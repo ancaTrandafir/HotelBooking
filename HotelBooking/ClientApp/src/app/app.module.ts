@@ -45,6 +45,7 @@ import { UpdateReservationComponent } from './reservation/update-reservation/upd
 import { AddReservationComponent } from './reservation/add-reservation/add-reservation.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { ReservationService } from './reservation/shared/reservation.service';
+import { AdminComponent } from './admin/admin.component';
 
 
 
@@ -67,7 +68,8 @@ import { ReservationService } from './reservation/shared/reservation.service';
     AddReservationComponent,
     UpdateReservationComponent,
     ReservationListComponent,
-    ReservationDetailsComponent
+    ReservationDetailsComponent,
+    AdminComponent
   ],
 
   imports: [

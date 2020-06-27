@@ -6,6 +6,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms'
 import { UserService } from '../../user/shared/user.service';
 import { User } from '../../user/shared/user.model';
 import { ReservationService } from '../shared/reservation.service';
+import { ActivatedRoute } from '@angular/router';
+import { HotelService } from '../../hotel/shared/hotel.service';
+import { Hotel } from '../../hotel/shared/hotel.model';
 
 
 
@@ -24,30 +27,31 @@ export class AddReservationComponent implements OnInit {
     idCopied: number;
     reservationReactiveForm: FormGroup;
     userLoggedIn: User;
+    hotelBooked: Hotel;
 
 
 
-    get Title() {
+    get Guest() {
         return this.reservationReactiveForm.get('Guest');
     }
 
-    get Description() {
+    get NoOfPersons() {
       return this.reservationReactiveForm.get('NoOfPersons');
     }
 
-    get Genre() {
+    get ArrivalDate() {
       return this.reservationReactiveForm.get('ArrivalDate');
     }
 
-    get Duration() {
+    get DepartureDate() {
       return this.reservationReactiveForm.get('DepartureDate');
     }
 
-    get YearOfRelease() {
+    get RoomType() {
         return this.reservationReactiveForm.get('RoomType');
     }
 
-    get Director() {
+    get BreakfastIncluded() {
         return this.reservationReactiveForm.get('BreakfastIncluded');
     }
 
@@ -61,10 +65,12 @@ export class AddReservationComponent implements OnInit {
 
 
 
-  constructor(  public service: ReservationService,
+  constructor(  public reservationService: ReservationService,
                 private location: Location,
                 private fb: FormBuilder,
-                private userService: UserService
+                private userService: UserService,
+                private hotelService: HotelService,
+                private activatedRoute: ActivatedRoute
     ) { }
 
 
@@ -80,16 +86,31 @@ export class AddReservationComponent implements OnInit {
             NoOfPersons: ['', [Validators.required]],
             ArrivalDate: ['', [Validators.required]],
             DepartureDate: ['', [Validators.required]],
-            RoomType: ['', [Validators.required, Validators.min(1900), Validators.max(2020)]],
-            BreakfastIncluded: ['', [Validators.required]],
+            RoomType: ['', [Validators.required, Validators.min(1900), Validators.max(2020)]]
+          //  BreakfastIncluded: ['', [Validators.required]]
         });
     
 
     this.resetForm();   
 
-    this.userLoggedIn = this.userService.currentUserValue;  
+    const id = +this.activatedRoute.snapshot.paramMap.get('id');
+    console.log("idHotel din URL " + id);
+
+    this.userLoggedIn = this.userService.currentUserValue;
+    this.hotelService.getHotelById(id)
+      .toPromise()
+      .then(
+        response => {
+          this.hotelBooked = response;
+          console.log(response);
+        },
+        error => {
+          console.log(error)
+        })
+
 
     console.log(this.userLoggedIn);
+    console.log(this.hotelBooked);
     }
 
 
@@ -102,19 +123,22 @@ export class AddReservationComponent implements OnInit {
 
       this.reservationReactiveForm = form; 
 
-      this.service.formDataReservation = this.reservationReactiveForm.value;
+      this.reservationService.formDataReservation = this.reservationReactiveForm.value;
 
-      this.service.formDataReservation.UserId = this.userLoggedIn.Id;   
+      this.reservationService.formDataReservation.UserId = this.userLoggedIn.Id;
+      this.reservationService.formDataReservation.User = this.userLoggedIn;     // transmit catre backend tokenUser
+      this.reservationService.formDataReservation.HotelId = this.hotelBooked.Id;
+      this.reservationService.formDataReservation.Hotel = this.hotelBooked;
       console.log(this.userLoggedIn);
       
-        this.service.postReservation()
+        this.reservationService.postReservation()
             .toPromise()
             .then(
                     response => {   
                     console.log("successfully added");
-                    this.service.toastr.success('Submitted successfully', 'Reservations');  
+                    this.reservationService.toastr.success('Submitted successfully', 'Reservations');  
                     this.resetForm();
-                    this.service.getReservations(); 
+                    this.reservationService.getReservations(); 
                     this.location.back();
                 },
                 error => {
@@ -127,7 +151,7 @@ export class AddReservationComponent implements OnInit {
 
 
     resetForm() {
-        this.service.formDataReservation= {  
+        this.reservationService.formDataReservation= {  
                         Id: 0,
                         Hotel: null,
                         Guest: '',
@@ -136,8 +160,9 @@ export class AddReservationComponent implements OnInit {
                         DepartureDate: null,
                         RoomType: null,
                         RoomFare: null,
-                        BreakfastIncluded: null,
+                        BreakfastIncluded: true,
                         UserId: null,
+                        HotelId: null,
                         User: null
                     }
            

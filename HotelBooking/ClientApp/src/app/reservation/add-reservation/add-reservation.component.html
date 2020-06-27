@@ -1,127 +1,139 @@
-<h2 class="text-center">Add a reservation to hotel {{service.Hotel.Name}}</h2>
-<br>
-
-
-<form [formGroup]="reservationReactiveForm" [hidden]="success" autocomplete="on" (ngSubmit)="onSubmit(reservationReactiveForm)">
-
-  <input type="hidden" name="Id" [value]="service.formDataReservation.Id">
-  <input type="hidden" name="UserId" [value]="service.formDataReservation.UserId">
-  <input type="hidden" name="HotelId" [value]="service.formDataReservation.HotelId">
-
-
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text bg-white">
-          <i class="fas fa-user" [class.green-icon]="Guest.valid" [class.red-icon]="Guest.invalid && Guest.touched"></i>
-        </div>
-      </div>
-      <input formControlName="Guest" type="text" class="form-control" placeholder="Guest" required maxlength="50" minlength="3">
-      <div *ngIf="(Guest.dirty || Guest.touched) && Guest.invalid" class="alert alert-danger">
-        <div *ngIf="Guest.errors.required">Guest is required.</div>
-        <div *ngIf="Guest.errors.minlength">Guest name should have at least 3 characters.</div>
-        <div *ngIf="Guest.errors.maxlength">Guest name should have at most 50 characters.</div>
-      </div>
-    </div>
-  </div><br>
-
-
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text bg-white">
-          <i class="fas fa-users"></i>
-        </div>
-        <input formControlName="NoOfPersons" type="number" class="form-control" placeholder="NoOfPersons" min="1" max="3" required>
-        <div *ngIf="(NoOfPersons.dirty || NoOfPersons.touched) && NoOfPersons.invalid" class="alert alert-danger">
-          <div *ngIf="NoOfPersons.errors.required">Number of persons is required.</div>
-        </div>
-      </div>
-    </div>
-  </div><br>
-
-
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text bg-white">
-          <i class="far fa-calendar-plus"></i>
-        </div>
-      </div>
-      <label for="ArrivalDate">Arrival date: </label>
-      <input formControlName="ArrivalDate" type="date" placeholder="yyyy-MM-dd" required>
-      <div *ngIf="(ArrivalDate.dirty || ArrivalDate.touched) && ArrivalDate.invalid" class="alert alert-danger">
-        <div *ngIf="ArrivalDate.errors.required">Arrival date added is required.</div>
-      </div>
-    </div>
-  </div>
+<div class="wrap">
+  <h2 class="text-center">Add a reservation to {{hotelBooked.HotelName}}</h2>
   <br>
 
 
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text bg-white">
-          <i class="far fa-calendar-plus"></i>
+  <form class="col s12" [formGroup]="reservationReactiveForm" [hidden]="success" autocomplete="on" (ngSubmit)="onSubmit(reservationReactiveForm)">
+
+    <input type="hidden" name="Id" [value]="service.formDataReservation.Id">
+    <input type="hidden" name="UserId" [value]="userLoggedIn.Id">
+    <input type="hidden" name="HotelId" [value]="hotelBooked.Id">
+
+
+    <div class="form-group">
+      <div class="input-group mb-3 input-group-lg">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <i class="fas fa-user" [class.green-icon]="Guest.valid" [class.red-icon]="Guest.invalid && Guest.touched"></i>
+          </div>
+        </div>
+        <div class="mat-div input-field col s6">
+          <input formControlName="Guest" type="text" class="form-control" placeholder="Guest" required maxlength="50" minlength="3">
+          <div *ngIf="(Guest.dirty || Guest.touched) && Guest.invalid" class="alert alert-danger">
+            <div *ngIf="Guest.errors.required">Guest is required.</div>
+            <div *ngIf="Guest.errors.minlength">Guest name should have at least 3 characters.</div>
+            <div *ngIf="Guest.errors.maxlength">Guest name should have at most 50 characters.</div>
+          </div>
         </div>
       </div>
-      <label for="DepartureDate">Departure date: </label>
-      <input formControlName="DepartureDate" type="date" placeholder="yyyy-MM-dd" required>
-      <div *ngIf="(DepartureDate.dirty || DepartureDate.touched) && DepartureDate.invalid" class="alert alert-danger">
-        <div *ngIf="DepartureDate.errors.required">Departure date added is required.</div>
-      </div>
-    </div>
-  </div>
-  <br>
+    </div><br>
 
 
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text bg-white">
-          <i class="fas fa-theater-masks"></i>
+    <div class="form-group">
+      <div class="input-group mb-3 input-group-lg">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="mat-div input-field col s6">
+            <label class="mat-label">Number of persons</label>
+            <input formControlName="NoOfPersons" type="number" class="form-control" min="1" max="3" required>
+            <div *ngIf="(NoOfPersons.dirty || NoOfPersons.touched) && NoOfPersons.invalid" class="alert alert-danger">
+              <div *ngIf="NoOfPersons.errors.required">Number of persons is required.</div>
+            </div>
+          </div>
         </div>
       </div>
-      <label for="RoomType">RoomType: </label>
-      <select id="roomtype " formControlName="RoomType" type="text" class="form-control" placeholder="Room type" required>
-        <option value="Economy">Economy</option>
-        <option value="Balcony">Balcony</option>
-        <option value="Seaview">Seaview</option>
-        <option value="Deluxe">Deluxe</option>
-      </select>
-      <div *ngIf="(RoomType.dirty || RoomType.touched) && RoomType.invalid" class="alert alert-danger">
-        <div *ngIf="RoomType.errors.required">Room type is required.</div>
+    </div><br>
+
+
+    <div class="form-group">
+      <div class="input-group mb-3 input-group-lg">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <i class="far fa-calendar-plus"></i>
+          </div>
+        </div>
+        <div class="mat-div input-field col s6">
+          <input formControlName="ArrivalDate" type="date" placeholder="Arrival date" required>
+          <div *ngIf="(ArrivalDate.dirty || ArrivalDate.touched) && ArrivalDate.invalid" class="alert alert-danger">
+            <div *ngIf="ArrivalDate.errors.required">Arrival date added is required.</div>
+          </div>
+        </div>
       </div>
     </div>
-  </div><br>
+    <br>
 
 
-  
-  <div class="form-group">
-    <div class="input-group">
-      <div class="input-group-prepend">
-        <div class="input-group-text bg-white">
-          <i class="fas fa-check"></i>
+    <div class="form-group">
+      <div class="input-group mb-3 input-group-lg">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <i class="far fa-calendar-plus"></i>
+          </div>
         </div>
-      </div> 
-      <label for="BreakfastIncluded">Breakfast: </label>
-      <input type="radio" value="true">
-      <label for="BreakfastIncluded">No breakfast: </label>
-      <input type="radio" value="false">
-
+        <div class="mat-div input-field col s6">
+          <input formControlName="DepartureDate" type="date" placeholder="Departure date" required>
+          <div *ngIf="(DepartureDate.dirty || DepartureDate.touched) && DepartureDate.invalid" class="alert alert-danger">
+            <div *ngIf="DepartureDate.errors.required">Departure date added is required.</div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div><br>
+    <br>
+
+
+    <div class="form-group">
+      <div class="input-group mb-3 input-group-lg">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <i class="fas fa-theater-masks"></i>
+          </div>
+        </div>
+        <div class="mat-div">
+          <label class="mat-label">Room type</label>
+          <select id="roomtype " formControlName="RoomType" type="text" class="form-control" placeholder="Room type" required>
+            <option value="Economy">Economy</option>
+            <option value="Balcony">Balcony</option>
+            <option value="Seaview">Seaview</option>
+            <option value="Deluxe">Deluxe</option>
+          </select>
+          <div *ngIf="(RoomType.dirty || RoomType.touched) && RoomType.invalid" class="alert alert-danger">
+            <div *ngIf="RoomType.errors.required">Room type is required.</div>
+          </div>
+        </div>
+        </div>
+    </div><br>
 
 
 
-  <div class="form-group">
-    <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formReservation.invalid">
-      <i class="fas fa-database"></i>  Reservation
-    </button>
-    <button class="btn btn-danger btn-lg btn-block" (click)="ReservationReactiveForm.reset()">Reset form</button>
-  </div>
+    <div class="form-group">
+      <div class="input-group mb-3 input-group-lg">
+        <div class="input-group-prepend">
+          <div class="input-group-text bg-white">
+            <i class="fas fa-check"></i>
+          </div>
+        </div>
+          <label>
+            <input type="radio" class="with-gap" value="true">Breakfast included
+          </label>
+          <label>
+            <input type="radio" class="with-gap" value="false">No breakfast
+          </label>
+        </div>
+      </div>
+    <br>
 
 
-</form>
+
+    <div class="form-group">
+      <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formReservation.invalid">
+        <i class="fas fa-database"></i>  Reservation
+      </button>
+      <button class="btn btn-danger btn-lg btn-block" (click)="ReservationReactiveForm.reset()">Reset form</button>
+    </div>
+
+
+  </form>
 
 

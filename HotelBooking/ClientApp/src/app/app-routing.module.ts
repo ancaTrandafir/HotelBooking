@@ -12,11 +12,16 @@ import { AddHotelComponent } from './hotel/add-hotel/add-hotel.component';
 import { AddReservationComponent } from './reservation/add-reservation/add-reservation.component';
 import { UpdateHotelComponent } from './hotel/update-hotel/update-hotel.component';
 import { UpdateReservationComponent } from './reservation/update-reservation/update-reservation.component';
+import { ReservationDetailsComponent } from './reservation/reservation-details/reservation-details.component';
+import { AdminComponent } from './admin/admin.component';
+import { Role } from './user/shared/role';
 
 
 
 
 const routes: Routes = [
+
+  { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] }, //, data: { roles: [Role.Admin] } },
 
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },       // parent component with children
                                                                               // treb sa fii logat sa ajungi la home
@@ -30,12 +35,14 @@ const routes: Routes = [
       },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'fetch-hotels', component: HotelComponent },
+
+  { path: 'fetch-hotels', component: HotelComponent }, 
   { path: 'fetch-reservations', component: ReservationComponent },
+  { path: 'fetch-reservations/:id', component: ReservationComponent },
   { path: 'hotel-details/:id', component: HotelDetailsComponent },
-  { path: 'reservations-details/:id', component: HotelDetailsComponent },
+  { path: 'reservation-details/:id', component: ReservationDetailsComponent },
   { path: 'add-hotel', component: AddHotelComponent },
-  { path: 'add-reservation', component: AddReservationComponent },
+  { path: 'add-reservation/:id', component: AddReservationComponent },
   { path: 'update-hotel/:id', component: UpdateHotelComponent },
   { path: 'update-reservation/:id', component: UpdateReservationComponent },
   { path: 'delete-hotel/:id', component: HotelComponent },

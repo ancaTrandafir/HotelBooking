@@ -15,6 +15,7 @@ namespace HotelBooking.Services
        // PaginatedList<ReservationGetModel> GetReservationsPaginated(PagingParameters pagingParameters);
         IEnumerable<ReservationGetModel> GetReservations();
         IEnumerable<ReservationGetModel> FilterByDate(string from, string to);
+        IEnumerable<ReservationGetModel> FilterByUserAndDate(string userId, string from, string to);
         IQueryable<ReservationGetModel> FilterByUserId(string id);
         Reservation GetReservationById(long id);
         Reservation Create(ReservationPostModel reservation);
@@ -92,10 +93,7 @@ namespace HotelBooking.Services
 
 
         public IEnumerable<ReservationGetModel> FilterByDate(string from, string to)
-        {
-            IQueryable<Reservation> reservations = context.Reservations
-                .OrderBy(m => m.ArrivalDate);
-
+        { 
             DateTime fromDate = DateTime.Parse(from);
             DateTime toDate = DateTime.Parse(to);
     
@@ -103,7 +101,7 @@ namespace HotelBooking.Services
                 .Where(r => (r.ArrivalDate > fromDate) && (r.DepartureDate < toDate));
 
             var query = result
-                .OrderBy(r => r.Hotel);
+                .OrderBy(r => r.ArrivalDate);
 
             return query;
         }
@@ -116,10 +114,35 @@ namespace HotelBooking.Services
 
 
 
+        public IEnumerable<ReservationGetModel> FilterByUserAndDate(string userId, string from, string to)
+        {
+            DateTime fromDate = DateTime.Parse(from);
+            DateTime toDate = DateTime.Parse(to);
+
+            var result = this.GetReservations()
+                .Where(r => (r.ArrivalDate > fromDate) && (r.DepartureDate < toDate));
+
+            var query = result
+                .Where(r => r.UserId == Convert.ToInt64(userId))
+                .OrderBy(r => r.ArrivalDate);
+
+            return query;
+        }
+
+
+
+
+
+
+
+
+
+
+
         public Reservation GetReservationById(long id)
         {
             return context.Reservations
-                .Include(r => r.Hotel)  // ?????
+             //   .Include(r => r.User)  // ?????
                 .FirstOrDefault(r => r.Id == id);
         }
 
@@ -132,8 +155,10 @@ namespace HotelBooking.Services
 
         public Reservation Update(long id, Reservation reservation)
         {
-            var existing = context.Reservations.AsNoTracking().FirstOrDefault(r => r.Id == id);
-            
+            var existing = context.Reservations.AsNoTracking()
+                .Include(r => r.User);
+            //.FirstOrDefault(r => r.Id == id);
+
             if (existing == null)
             {
                 context.Reservations.Add(reservation);

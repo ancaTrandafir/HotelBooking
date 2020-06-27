@@ -35,6 +35,7 @@ export class SignUpComponent implements OnInit {
       Email: "",
       FirstName: "",
       LastName: "",
+      Role: null
     }
 
   }
@@ -47,10 +48,10 @@ export class SignUpComponent implements OnInit {
           .subscribe((data: any) => {
             if (data.Succeeded == true) {
               this.resetForm(userRegistrationForm);
-              this.toastr.success('User registration successful');
+              this.toastr.success('User registration successful', 'Users');
             }
             else
-              this.toastr.error(data.Errors[0]);
+              this.toastr.error(data.Errors[0], 'Users');
           });
       }
 

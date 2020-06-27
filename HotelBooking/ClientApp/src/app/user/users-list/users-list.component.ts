@@ -4,7 +4,6 @@ import { User } from '../shared/user.model';
 import { AuthService, SocialUser } from 'angularx-social-login';
 import { HotelService } from '../../hotel/shared/hotel.service';
 import { Hotel } from '../../hotel/shared/hotel.model';
-import { UserAtHotel } from '../shared/userAtHotel';
 
 
 

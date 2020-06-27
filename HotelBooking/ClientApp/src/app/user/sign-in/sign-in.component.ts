@@ -19,13 +19,25 @@ export class SignInComponent implements OnInit {
 
 
   constructor(private userService: UserService,
-              private router: Router) { }
+              private router: Router,
+              private activatedRoute: ActivatedRoute) 
+
+    {
+      // redirect to home if already logged in
+      //if (this.userService.currentUserValue) 
+      //          this.router.navigate(['/']);
+      
+
+     }
 
 
 
   ngOnInit() {
 	    sessionStorage.removeItem('currentUser');
-        sessionStorage.clear(); 
+      sessionStorage.clear();
+
+      // get return url from route parameters or default to '/'
+    // this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
 
   }
   
@@ -46,9 +58,13 @@ export class SignInComponent implements OnInit {
       .pipe(first())
       .subscribe(data => {
 
-        console.log("a intrat");;
-        this.router.navigate(['localhost:4200/home']);  // intra pe pageNotFound si am facut un work-around sa ma redirectioneze care home, vezi app-routing.module
+        console.log("a intrat");
 
+        console.log(this.userService.currentUserValue);
+
+        if (this.userService.currentUserValue.Role == "Admin")
+          this.router.navigate(['admin']);
+        else this.router.navigate(['home']);
       },
 
        (err: HttpErrorResponse) => {

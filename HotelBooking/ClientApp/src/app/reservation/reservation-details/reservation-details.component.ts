@@ -6,6 +6,9 @@ import { UserService } from '../../user/shared/user.service';
 import { User } from '../../user/shared/user.model';
 import { ReservationService } from '../shared/reservation.service';
 import { Reservation } from '../shared/reservation.model';
+import { RouterModule } from '@angular/router';
+import { HotelService } from '../../hotel/shared/hotel.service';
+import { Hotel } from '../../hotel/shared/hotel.model';
 
 
 @Component({
@@ -17,12 +20,14 @@ import { Reservation } from '../shared/reservation.model';
 export class ReservationDetailsComponent implements OnInit {
 
   public userThatAdeed: User;
-  private copyOfSelectedReservation: Reservation;
+  private selectedReservation: Reservation;
 
 
   constructor(private reservationService: ReservationService,   
-              private userService: UserService,  
+              private userService: UserService,
+              private hotelService: HotelService,
               private activatedRoute: ActivatedRoute,
+              private route: RouterModule,
               private location: Location) { }
 
 
@@ -34,8 +39,12 @@ export class ReservationDetailsComponent implements OnInit {
   ngOnInit(): void {
 
     this.getReservationById();
+    this.getHotelFromReservationSelected();
+    console.log(this.selectedReservation);
 
   }
+
+
 
 
 
@@ -49,24 +58,42 @@ export class ReservationDetailsComponent implements OnInit {
       .toPromise()
       .then(response => {     
         this.reservationService.selectedReservation = response as Reservation;
-
-        this.copyOfSelectedReservation = this.reservationService.selectedReservation;
+      
       });
 
-    //this.userService.getUserById(id)
-    //  .toPromise()
-    //  .then(response => {
-    //    this.userThatAdeed = response as User;
-    //  });
 
-    console.log(this.userService.currentUserValue);
-    console.log(this.reservationService.selectedReservation);
-    console.log(this.reservationService.selectedReservation.User.FirstName);
-    console.log(this.copyOfSelectedReservation);
   }
 
 
 
+
+
+
+
+  getHotelFromReservationSelected() {
+
+    this.reservationService.getHotelFromReservationSelected();
+
+    //console.log(this.reservationService.selectedReservation.HotelId);
+
+    //this.hotelService.getHotelById(this.reservationService.selectedReservation.HotelId)
+    //  .toPromise()
+    //  .then(response => {
+    //    this.reservationService.selectedReservation.Hotel = response as Hotel;
+    //    console.log(this.reservationService.selectedReservation.Hotel);
+    //  });
+
+
+    this.reservationService.selectedReservation.User = this.userService.currentUserValue;
+
+    this.selectedReservation = this.reservationService.selectedReservation;
+    console.log(this.selectedReservation);
+
+    console.log(this.userService.currentUserValue);
+    console.log(this.reservationService.selectedReservation);
+    console.log(this.reservationService.selectedReservation.User.FirstName);
+    
+  }
 
 
 
@@ -76,6 +103,21 @@ export class ReservationDetailsComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+
+
+
+
+
+
+
+  updateBtnClicked(): void {    // apas buton de edit si asignez lui form val lui selectedReservation
+
+    this.reservationService.formDataReservation = this.reservationService.selectedReservation;
+    this.reservationService.idCopied = this.selectedReservation.Id;   // copiez valoare id si apelez din la update
+  }
+
+
 }
 
 

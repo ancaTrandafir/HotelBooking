@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { Reservation } from '../shared/reservation.model';
 import { ReservationService } from '../shared/reservation.service';
 
@@ -12,6 +13,7 @@ import { ReservationService } from '../shared/reservation.service';
 
 export class ReservationListComponent implements OnInit {
 
+  idUser: any
   public reservationList: Reservation[];
   public filteredReservations: Reservation[];
   errorMessage: string;
@@ -19,15 +21,22 @@ export class ReservationListComponent implements OnInit {
 
 
 
+
+
   constructor(private service: ReservationService,
-              private toastr: ToastrService) { }
+              private toastr: ToastrService,
+              private router: RouterModule,
+              private activatedRoute: ActivatedRoute) { }
 
 
 
 
   ngOnInit() {
 
-    this.getAllReservations();
+    this.idUser = +this.activatedRoute.snapshot.paramMap.get('id');
+    console.log("idUser din URL " + this.idUser);
+
+    this.getReservationsByUserId();
     console.log(this.reservationList);
 
   }
@@ -39,35 +48,55 @@ export class ReservationListComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     this.submitPressed = true; 
-    this.getFilteredReservationsByDate(form);
+    this.getUserFilteredReservationsByDate(form);
 
   }
 
 
 
 
-  getAllReservations() {
+  //getAllReservations() {
 
-    this.service.getReservations()
+  //  this.service.getReservations()
+  //    .toPromise()
+  //    .then(response => {
+  //      console.log(response);
+  //      this.reservationList = response as Reservation[]
+  //    },
+  //       error => {
+  //         console.log(error);
+  //       });
+
+  //}
+
+
+
+
+
+
+  getReservationsByUserId() {
+
+    this.service.filterReservationsByUserId(this.idUser)
       .toPromise()
       .then(response => {
         console.log(response);
         this.reservationList = response as Reservation[]
       },
-         error => {
-           console.log(error);
-         });
+        error => {
+          console.log(error);
+        });
 
   }
+  
   
 
 
 
-  getFilteredReservationsByDate(form: NgForm) {
+  getUserFilteredReservationsByDate(form: NgForm) {
 
     console.log(form.value.from);
 
-    this.service.filterReservationsByDate(form.value.from, form.value.to)     
+    this.service.filterReservationsByUserAndDate(this.idUser, form.value.from, form.value.to)     
       .toPromise()
       .then(response => {
         this.reservationList = response;
@@ -111,6 +140,6 @@ export class ReservationListComponent implements OnInit {
 
   refreshList() {
     console.log("refresh clicked");
-    this.getAllReservations();
+    this.getReservationsByUserId();
   }
 }

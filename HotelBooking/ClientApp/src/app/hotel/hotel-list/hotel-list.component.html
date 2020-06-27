@@ -39,10 +39,10 @@
           <td (click)="populateForm(h)">{{h.City}}</td>
           <td (click)="populateForm(m)">{{h.Capacity}}</td>
           <td (click)="populateForm(m)">{{h.Rating}}</td>
-
+          <td (click)="populateForm(m)">{{h.ReviewsCount}}</td>
 
           <td>
-            <a [routerLink]="['/details', h.Id]" routerLinkActive="active"> Details</a>
+            <a [routerLink]="['/hotel-details', h.Id]" routerLinkActive="active"> Details</a>
             <i class="far fa-trash-alt fa-lg text-danger" (click)="onDelete(h.Id)"></i>
           </td>
         </tr>

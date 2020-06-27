@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 import { ReservationService } from '../shared/reservation.service';
+import { UserService } from '../../user/shared/user.service';
+import { HotelService } from '../../hotel/shared/hotel.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -13,8 +16,11 @@ export class UpdateReservationComponent implements OnInit {
 
     idCopied: number;
 
-    constructor(public service: ReservationService,
-        private location: Location
+  constructor(public reservationService: ReservationService,
+              public userService: UserService,
+              public hotelService: HotelService,
+              private activatedRoute: ActivatedRoute,
+              private location: Location
     ) { }
 
 
@@ -23,29 +29,8 @@ export class UpdateReservationComponent implements OnInit {
 
 
     ngOnInit() {
-
-        if (this.service.updateBtnReservationClicked == true) 
             this.autofillFormForUpdate();
-
        }
-
-
-
-
-
-
-
-
-    resetForm(formReservation?: NgForm) {   
-
-        if (formReservation != null) {
-            console.log(this.idCopied);
-            formReservation.form.reset();  
-        }
-      
-        this.service.updateBtnReservationClicked = false;  
-        this.service.formDataReservation.Id = 0;
-    }   
 
 
 
@@ -56,8 +41,7 @@ export class UpdateReservationComponent implements OnInit {
     onSubmit(formReservation: NgForm) {
 
             this.updateRecord(formReservation); 
-            formReservation.reset(); 
-            this.service.updateBtnReservationClicked == false;       
+      
     }
 
 
@@ -67,16 +51,21 @@ export class UpdateReservationComponent implements OnInit {
 
     updateRecord(formReservation: NgForm) {  
 
-      console.log(formReservation);
+      console.log(formReservation.value);
 
-        this.service.updateReservation(formReservation.value) 
+      formReservation.value.Id = +this.activatedRoute.snapshot.paramMap.get('id');
+      formReservation.value.UserId = this.userService.currentUserValue.Id;
+      formReservation.value.HotelId = this.reservationService.getHotelFromReservationSelected().Id;
+
+      console.log(formReservation.value);
+
+        this.reservationService.updateReservation(formReservation.value) 
             .toPromise()
             .then(
                     response => {   
                     console.log("successfully updated");
-                    this.service.toastr.info('Updated successfully', 'Reservations');  
-                    this.resetForm(formReservation);
-                    this.service.getReservations(); 
+                    this.reservationService.toastr.info('Updated successfully', 'Reservations');  
+                    this.reservationService.getReservations(); 
                     this.location.back();
                 },
 
@@ -90,11 +79,13 @@ export class UpdateReservationComponent implements OnInit {
 
 
 
-    autofillFormForUpdate() {
-      this.service.formDataReservation.Id = this.service.idCopied;
-        console.log(this.service.formDataReservation.Id);
-        this.service.formDataReservation;
-        console.log(this.service.formDataReservation);
+  autofillFormForUpdate() {
+
+        this.reservationService.formDataReservation.Id = this.reservationService.idCopied;
+        console.log(this.reservationService.formDataReservation.Id);
+
+        this.reservationService.formDataReservation;
+        console.log(this.reservationService.formDataReservation);
         
     }
 

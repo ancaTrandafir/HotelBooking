@@ -5,7 +5,7 @@ import { map} from 'rxjs/operators';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from 'angularx-social-login';
 import { FBUser } from './FBUser.model';
-import { UserAtHotel } from './userAtHotel';
+
 
 
 
@@ -149,7 +149,7 @@ export class UserService {
 
 
 
-  getHotelCountOfUser(userId) {
-    return this.http.get<UserAtHotel>(this.rootURL + '/usersAtHotels/filter?userId=' + userId);       
-  }
+  //getHotelCountOfUser(userId) {
+  //  return this.http.get<UserAtHotel>(this.rootURL + '/usersAtHotels/filter?userId=' + userId);       
+  //}
 }

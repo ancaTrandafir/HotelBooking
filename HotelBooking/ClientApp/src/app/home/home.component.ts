@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../user/shared/user.model';
 import { UserService } from '../user/shared/user.service';
 import { SocialUser, AuthService } from 'angularx-social-login';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,8 @@ export class HomeComponent implements OnInit {
   private userLoggedIn: any;  // fie localUser, fie socialUser
 
 
-  constructor(private userService: UserService
+  constructor(private userService: UserService,
+              private router: Router
     //  private authService : AuthService
   ) { }
 
@@ -42,7 +44,9 @@ export class HomeComponent implements OnInit {
   }
 
 
-
+  fetchReservationsForId(id) {
+    this.router.navigate(['fetch-reservations/' + id]);
+  }
 
 
 

@@ -27,7 +27,9 @@ namespace HotelBooking.Services
     }
 
     public class UserService : IUserService
+
     {
+
         private BookingsDbContext _dbContext;
         private readonly AppSettings _appSettings;
 
@@ -64,6 +66,7 @@ namespace HotelBooking.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role)      
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -72,7 +75,7 @@ namespace HotelBooking.Services
             user.Token = tokenHandler.WriteToken(token);
 
             // authentication successful
-            return user;
+            return user;         //user.WithoutPassword(); ;
         }
 
 
@@ -94,8 +97,8 @@ namespace HotelBooking.Services
                 FirstName = userdata.FirstName,
                 LastName = userdata.LastName,
                 Email = userdata.Email,
-                PictureURL = userdata.PictureURL
-                
+                PictureURL = userdata.PictureURL,
+                Role = "User"       // by default every user that signs-in with FB has User role
             };
                    
 
@@ -108,6 +111,7 @@ namespace HotelBooking.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
+                     new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -121,7 +125,7 @@ namespace HotelBooking.Services
             _dbContext.SaveChanges();
 
             // authentication successful
-            return user;
+            return user;    //user.WithoutPassword();
             
         }
 
@@ -263,7 +267,7 @@ namespace HotelBooking.Services
 
         // private helper methods
 
-        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");
             if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");

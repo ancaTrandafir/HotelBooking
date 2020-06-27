@@ -12,6 +12,7 @@ namespace HotelBooking.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public string Role { get; set; }
 
 
 
@@ -22,7 +23,8 @@ namespace HotelBooking.Models
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Email = user.Email,               
+                Email = user.Email, 
+                Role = user.Role
             };
         }
 
