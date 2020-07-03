@@ -1,31 +1,28 @@
-﻿//using FluentValidation;
-//using Movies.Models;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
+﻿using FluentValidation;
+using HotelBooking.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-//namespace MoviesAPI.ModelValidator
-//{
-//    public class MovieValidator : AbstractValidator<Movie>
-//	{ 
-//		public MovieValidator(MoviesDbContext context)
-//		{
-//			RuleFor(x => x.Description).NotEmpty()
-//				.MinimumLength(3)
-//				.MaximumLength(100);
+namespace HotelBooking.ModelValidator
+{
+	public class ReservationValidator : AbstractValidator<Reservation>
+	{
+		public ReservationValidator(BookingsDbContext context)
+		{
+			RuleFor(x => x.NoOfPersons).NotEmpty()
+				.GreaterThan(0)
+				.LessThan(4);
 
-//			RuleFor(x => x.Director).NotEmpty()
-//				.MinimumLength(3)
-//				.MaximumLength(20);
+			RuleFor(x => x.ArrivalDate).NotEmpty();
+			RuleFor(x => x.DepartureDate).NotEmpty();
 
-//			RuleFor(x => x.DateAdded).NotEmpty();
+			RuleFor(x => (x.ArrivalDate) > (DateTime.Now.Date));
+			RuleFor(x => (x.DepartureDate) > (DateTime.Now.Date));
+		}
 
 
-//			RuleFor(x => (x.DateAdded) < (DateTime.Now.Date));
-//		}
-
-		
-//	}
-//}
+	}
+}
 

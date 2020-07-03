@@ -23,13 +23,13 @@ namespace HotelBooking.Services
     }
 
 
-    public class HotelService : IHotelService
+    public class ReviewService : IHotelService
     {
         private BookingsDbContext context;
        
 
 
-        public HotelService(BookingsDbContext context)         {
+        public ReviewService(BookingsDbContext context)         {
             this.context = context;
       
         }

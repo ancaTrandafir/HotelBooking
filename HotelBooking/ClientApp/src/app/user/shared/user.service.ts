@@ -23,8 +23,9 @@ export class UserService {
 
     readonly rootURL = "https://localhost:44331";
     formDataRegister: User;
+    countResToBeFiltered: number;
 
-  public currentUserSubject: BehaviorSubject<any>;    // fie localUser fie FBUser
+    public currentUserSubject: BehaviorSubject<any>;    // fie localUser fie FBUser
     public currentUser: Observable<any>;
 
 
@@ -115,13 +116,19 @@ export class UserService {
     this.currentUserSubject.next(null);
 
     this.authService.signOut();
-  
+
   }
+
+
+
+
+    filterUsersByCountRes(){
+      return this.http.get<User[]>(this.rootURL + '/users/byCountRes?count=' + this.countResToBeFiltered);
+
+    }
+  
  
-
-
-   
-               
+             
             
 
   getUsers() {

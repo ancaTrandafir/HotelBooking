@@ -62,7 +62,7 @@ export class AddHotelComponent implements OnInit {
         this.hotelReactiveForm = this.fb.group({
             HotelName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
             City: ['', [Validators.required]],
-            Capacity: ['', [Validators.required, Validators.min(1), Validators.max(10)]],
+            Capacity: ['', [Validators.required, Validators.min(1)]]
         
         });
     

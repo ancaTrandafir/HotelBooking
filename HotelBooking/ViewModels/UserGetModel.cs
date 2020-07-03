@@ -13,10 +13,11 @@ namespace HotelBooking.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public int CountReservations { get; set; }
 
 
 
-        public static UserGetModel GetUserModel(User user)
+        public static UserGetModel GetUserModel(User user, BookingsDbContext context)
         {
             return new UserGetModel        // populeaza cu date din User
             {
@@ -24,7 +25,10 @@ namespace HotelBooking.Models
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email, 
-                Role = user.Role
+                Role = user.Role,
+                CountReservations = context.Reservations
+                               .Where(u => user.Id == u.UserId)
+                               .Count(),
             };
         }
 

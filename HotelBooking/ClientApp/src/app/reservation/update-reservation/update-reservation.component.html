@@ -2,7 +2,7 @@
 <br>
 
 <form #formReservation="ngForm" autocomplete="on" (submit)="onSubmit(formReservation)">
- 
+
 
   <div class="form-group">
     <div class="input-group">
@@ -42,6 +42,7 @@
     </div>
   </div>
 
+  <!--
   <div class="form-group">
     <div class="input-group">
       <label for="BreakfastIncluded">Breakfast: </label>
@@ -49,7 +50,7 @@
       <label for="BreakfastIncluded">No breakfast: :</label>
       <input name="BreakfastIncluded" #Watched="ngModel" [(ngModel)]="reservationService.formDataReservation.BreakfastIncluded" class="form-control" type="radio" value="false">
     </div>
-  </div>
+  </div>    -->
 
   <div class="form-group">
     <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formReservation.invalid">

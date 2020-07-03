@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MoviesAPI.ViewModels
+namespace HotelBooking.ViewModels
 {
     public class RegisterModel
     {

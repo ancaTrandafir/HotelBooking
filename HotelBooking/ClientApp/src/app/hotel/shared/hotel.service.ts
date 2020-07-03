@@ -54,6 +54,7 @@ export class HotelService {
 
 
   updateHotel(formData: Hotel) {
+    console.log(formData)
     return this.http.put(this.rootURL + '/hotels/' + formData.Id, this.formDataHotel);    
   }
 

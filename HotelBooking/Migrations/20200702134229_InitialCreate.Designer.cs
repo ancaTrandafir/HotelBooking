@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelBooking.Migrations
 {
     [DbContext(typeof(BookingsDbContext))]
-    [Migration("20200623161952_UserAtHotel")]
-    partial class UserAtHotel
+    [Migration("20200702134229_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,9 +47,9 @@ namespace HotelBooking.Migrations
 
             modelBuilder.Entity("HotelBooking.Models.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("HotelId")
@@ -59,6 +59,7 @@ namespace HotelBooking.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("UserId")
@@ -98,6 +99,9 @@ namespace HotelBooking.Migrations
                     b.Property<string>("PictureURL")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
@@ -126,6 +130,7 @@ namespace HotelBooking.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Guest")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("HotelId")

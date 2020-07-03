@@ -10,7 +10,7 @@ import { HotelReview } from './hotelReview.model';
 export class HotelReviewService {
 
     readonly rootURL = "https://localhost:44331";
-  selectedHotel: HotelReview;
+    selectedHotel: HotelReview;
 
     constructor(private http: HttpClient) { }
 

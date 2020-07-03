@@ -125,5 +125,16 @@ namespace HotelBooking.Controllers
         {
             return _userService.GetById(id);
         }
+
+
+
+        [Authorize(Roles = Role.Admin)]
+        [HttpGet("byCountRes")]
+        public IEnumerable<UserGetModel> GetFilteredUsersByCountRes(
+         [FromQuery] string count)
+        {
+            int countRes = int.Parse(count);
+            return _userService.FilterUsersByCountRes(countRes);
+        }
     }
 }

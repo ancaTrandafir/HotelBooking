@@ -23,12 +23,18 @@ namespace HotelBooking
     {
 
         public long Id { get; set; }
+        [Required]
         public long UserId { get; set; }
+        [Required]
         public long HotelId { get; set; }
+        [Required]
         public string Guest { get; set; }
+        [Required]
         public int NoOfPersons { get; set; }
         [DataType(DataType.Date)]
+        [Required]
         public DateTime ArrivalDate { get; set; }
+        [Required]
         [DataType(DataType.Date)]
         public DateTime DepartureDate { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]

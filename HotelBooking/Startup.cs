@@ -79,7 +79,7 @@ namespace HotelBooking
             // configure DI (Dependency Injection) for application services
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IReservationService, ReservationService>();
-            services.AddScoped<IHotelService, HotelService>();
+            services.AddScoped<IHotelService, ReviewService>();
 
 
 

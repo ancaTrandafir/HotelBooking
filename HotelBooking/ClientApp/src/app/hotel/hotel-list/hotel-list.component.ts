@@ -4,6 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Hotel } from '../shared/hotel.model';
 import { HotelService } from '../shared/hotel.service';
 import { PaginatedHotel } from '../shared/paginatedHotel.model';
+import { UserService } from '../../user/shared/user.service';
+import { User } from '../../user/shared/user.model';
 
 @Component({
   selector: 'app-hotel-list',
@@ -15,6 +17,7 @@ export class HotelListComponent implements OnInit {
 
   public hotelList: Hotel[];
   public filteredHotels: Hotel[];
+  private userLoggedIn: User;
   errorMessage: string;
   submitPressed = false;
 
@@ -40,7 +43,8 @@ export class HotelListComponent implements OnInit {
 
 
   constructor(private service: HotelService,
-    private toastr: ToastrService) {
+              private userService: UserService,
+              private toastr: ToastrService) {
 
   
   }
@@ -86,7 +90,8 @@ export class HotelListComponent implements OnInit {
       .toPromise()
       .then(response => {
         console.log(response);
-        this.hotelList = response as Hotel[]
+        this.hotelList = response as Hotel[];
+        this.userLoggedIn = this.userService.currentUserValue;
         console.log(this.hotelList);
       },
          error => {
@@ -107,7 +112,8 @@ export class HotelListComponent implements OnInit {
       .toPromise()
       .then(response => {
         this.hotelList = response;
-        console.log(this.hotelList)
+        console.log(this.hotelList);
+        this.submitPressed = true;
       });
   }
 

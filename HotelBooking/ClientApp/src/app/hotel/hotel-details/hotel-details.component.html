@@ -21,7 +21,9 @@
     <tr>
       <th>Id</th>
       <th>Text</th>
-      <th>Rating</th>
+      <th>Rating</th> <!-- Id 6 este admin -->
+      <th *ngIf="userLoggedIn.Id == 6">Delete</th>
+      <th *ngIf="userLoggedIn.Id != 6">Edit</th>
     </tr>
   </thead>
 
@@ -30,8 +32,8 @@
     <td>{{r.Id}}</td>
     <td>{{r.Text}}</td>
     <td>{{r.Rating}}</td>
-    <td (click)="onDelete(r.Id)"> Delete</td>
-    <td (click)="populateForm(r)"> Update</td>
+    <td *ngIf ="userLoggedIn.Id == 6" (click)="onDelete(r.Id)"><i class="fas fa-trash-alt fa-lg text-danger"></i></td>
+    <td *ngIf ="userLoggedIn.Id == r.UserId && userLoggedIn.Id != 6" (click)="populateForm(r)"><i class="fas fa-pen-alt fa-lg text-success"></i></td>
   </tr>
 
 
@@ -40,34 +42,39 @@
 
 <br>
 <br>
-<div class="d-flex justify-content-center">
-  <button type="button" class="btn btn-success btn-block" [routerLink]="['/add-reservation', hotelReviewService.selectedHotel.Id]" routerLinkActive='active'><i class="fas fa-concierge-bell"> Book this hotel</i></button>
-</div>
 
-  <br>
-  <br>
-  <h3>Add reviews:</h3>
-  <br>
-  <form #formReview="ngForm" (submit)="onSubmit(formReview)">
+<div *ngIf="userLoggedIn.Id != 6"> 
 
-    <input type="hidden" name="Id" [value]="reviewService.formDataReview.Id">
+  <div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-success btn-block" [routerLink]="['/add-reservation', hotelReviewService.selectedHotel.Id]" routerLinkActive='active'><i class="fas fa-concierge-bell"> Book this hotel</i></button>
+  </div>
 
-    <div class="input-group">
-      <textarea name="Text" #Text="ngModel" [(ngModel)]="reviewService.formDataReview.Text" type="text" class="form-control" placeholder="Text" rows="5" cols="50" required></textarea>
-    </div>
     <br>
-    <div class="input-group">
-      <label for="Rating">Rating: </label>
-      <input name="Rating" type="number" [(ngModel)]="reviewService.formDataReview.Rating" class="form-control" min="1" max="10" required>
-    </div>
     <br>
-    <div class="input-group">
-      <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formReview.invalid">
-        Add review
-      </button>
-    </div>
+    <h3>Add reviews:</h3>
+    <br>
+    <form #formReview="ngForm" (submit)="onSubmit(formReview)">
 
-  </form>
+      <input type="hidden" name="Id" [value]="reviewService.formDataReview.Id">
+
+      <div class="input-group">
+        <textarea name="Text" #Text="ngModel" [(ngModel)]="reviewService.formDataReview.Text" type="text" class="form-control" placeholder="Text" rows="5" cols="50" required></textarea>
+      </div>
+      <br>
+      <div class="input-group">
+        <label for="Rating">Rating: </label>
+        <input name="Rating" type="number" [(ngModel)]="reviewService.formDataReview.Rating" class="form-control" min="1" max="10" required>
+      </div>
+      <br>
+      <div class="input-group">
+        <button class="btn btn-success btn-lg btn-block" type="submit" [disabled]="formReview.invalid">
+          Add review
+        </button>
+      </div>
+
+    </form>
+
+  </div>
 
   <br>
   <button (click)="goBack()">Back</button>

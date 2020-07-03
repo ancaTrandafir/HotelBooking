@@ -14,8 +14,7 @@ namespace HotelBooking
         public string HotelName { get; set; }
         public string City { get; set; }
         public int Capacity{ get; set; }
-        public double Rating { get; set; }
-        [JsonIgnore]       
+        public double Rating { get; set; }     
         public List<Review> Reviews{ get; set; }
         
 

@@ -2,7 +2,18 @@
   <h2 class="text-center">List of users</h2>
   <br>
 
-
+  <form #form="ngForm" autocomplete="on" (submit)="filterUsersByCountRes(form)">
+    <label>Filter users by number of reservations:</label>
+    <input name="count" [(ngModel)]="count">
+    <br>
+    <button type="submit">Filter</button>
+    <br>
+  </form>
+  <br>
+  <br>
+  <button (click)="refreshList()">Refresh list of users</button>
+  <br>
+  <br>
   <table class="table table-hover">
 
     <thead class="thead-dark">
@@ -10,7 +21,8 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
-        <th>Email</th>
+        <th>Role</th>
+        <th>Count of res.</th>
       </tr>
     </thead>
 
@@ -21,6 +33,7 @@
       <td>{{u.LastName}}</td>
       <td>{{u.Email}}</td>
       <td>{{u.Role}}</td>
+      <td>{{u.CountReservations}}</td>
 
     </tr>
 
@@ -42,7 +55,7 @@
             <tr>
               <th>Hotel name</th>
               <th>City</th>
-              <th>Number of reservations</th>
+              <th>Number of users</th>
             </tr>
           </thead>
 

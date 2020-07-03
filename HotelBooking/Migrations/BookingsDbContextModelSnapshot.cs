@@ -45,9 +45,9 @@ namespace HotelBooking.Migrations
 
             modelBuilder.Entity("HotelBooking.Models.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<long>("HotelId")
@@ -57,6 +57,7 @@ namespace HotelBooking.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("UserId")
@@ -127,6 +128,7 @@ namespace HotelBooking.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Guest")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("HotelId")

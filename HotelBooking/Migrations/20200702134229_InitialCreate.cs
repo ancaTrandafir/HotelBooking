@@ -36,7 +36,8 @@ namespace HotelBooking.Migrations
                     PictureURL = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<byte[]>(nullable: true),
                     PasswordSalt = table.Column<byte[]>(nullable: true),
-                    Token = table.Column<string>(nullable: true)
+                    Token = table.Column<string>(nullable: true),
+                    Role = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,7 +52,7 @@ namespace HotelBooking.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<long>(nullable: false),
                     HotelId = table.Column<long>(nullable: false),
-                    Guest = table.Column<string>(nullable: true),
+                    Guest = table.Column<string>(nullable: false),
                     NoOfPersons = table.Column<int>(nullable: false),
                     ArrivalDate = table.Column<DateTime>(nullable: false),
                     DepartureDate = table.Column<DateTime>(nullable: false),
@@ -74,11 +75,11 @@ namespace HotelBooking.Migrations
                 name: "Reviews",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HotelId = table.Column<long>(nullable: false),
                     UserId = table.Column<long>(nullable: false),
-                    Text = table.Column<string>(nullable: true),
+                    Text = table.Column<string>(nullable: false),
                     Rating = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -92,6 +93,32 @@ namespace HotelBooking.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Reviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UsersAtHotels",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HotelId = table.Column<long>(nullable: false),
+                    UserId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersAtHotels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UsersAtHotels_Hotels_HotelId",
+                        column: x => x.HotelId,
+                        principalTable: "Hotels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersAtHotels_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -112,6 +139,16 @@ namespace HotelBooking.Migrations
                 name: "IX_Reviews_UserId",
                 table: "Reviews",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersAtHotels_HotelId",
+                table: "UsersAtHotels",
+                column: "HotelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersAtHotels_UserId",
+                table: "UsersAtHotels",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -121,6 +158,9 @@ namespace HotelBooking.Migrations
 
             migrationBuilder.DropTable(
                 name: "Reviews");
+
+            migrationBuilder.DropTable(
+                name: "UsersAtHotels");
 
             migrationBuilder.DropTable(
                 name: "Hotels");

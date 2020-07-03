@@ -81,7 +81,7 @@ namespace Movies.Models
 
 
 
-            if (context.Hotels.Count() >= 100)
+            if (context.Hotels.Count() >= 50)
             {
                 return;
             }

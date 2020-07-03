@@ -18,14 +18,16 @@
 <br>
 <label>Room type: {{selectedReservation.RoomType}}</label>
 <br>
-<label>Breakfast included: {{selectedReservation.BreakfastIncluded}}</label>
 <br>
 <br>
 
 
 
-<button type="button" class="btn btn-success" [routerLink]="['/update-reservation/' + reservationService.selectedReservation.Id]" (click)="updateBtnClicked()"><i class="fas fa-edit"></i>
-        Edit this reservation</button>
+<button type="button" class="btn btn-success" [routerLink]="['/update-reservation/' + reservationService.selectedReservation.Id]" (click)="updateBtnClicked()">
+  <i class="fas fa-edit"></i>
+  Edit this reservation
+</button>
+<br>
 <br>
 <button type="button" class="btn" (click)="goBack()">Back</button>
 

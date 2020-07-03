@@ -21,11 +21,14 @@ export class HotelDetailsComponent implements OnInit {
   public reviews: Review[];
   public idReviewSelected: number;
   public reviewToBeUpdated: Review;
-  public copyOfSelectedReview: HotelReview; 
+  public copyOfSelectedReview: HotelReview;
+  private userLoggedIn;
+  private hotelId: number;
 
 
   constructor(private hotelReviewService: HotelReviewService,   
-              private reviewService: ReviewService,  
+              private reviewService: ReviewService,
+              private userService: UserService,
               private activatedRoute: ActivatedRoute,
               private location: Location) { }
 
@@ -35,6 +38,11 @@ export class HotelDetailsComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    this.hotelId = +this.activatedRoute.snapshot.paramMap.get('id');
+    console.log("id din URL" + this.hotelId);
+
+    this.userLoggedIn = this.userService.currentUserValue;
 
     this.getHotelById();
   
@@ -47,16 +55,15 @@ export class HotelDetailsComponent implements OnInit {
 
 
   getHotelById(): void {
-    const id = +this.activatedRoute.snapshot.paramMap.get('id');
-    console.log("id din details " + id);
 
-    this.hotelReviewService.getHotelById(id)   
+    this.hotelReviewService.getHotelById(this.hotelId)   
 
       .toPromise()
       .then(response => {     
         this.hotelReviewService.selectedHotel = response as HotelReview;
      
-        this.copyOfSelectedReview = this.hotelReviewService.selectedHotel;  
+        this.copyOfSelectedReview = this.hotelReviewService.selectedHotel;
+        console.log(this.copyOfSelectedReview);
       });
 
   
@@ -75,6 +82,7 @@ export class HotelDetailsComponent implements OnInit {
     this.reviewService.formDataReview = {  
       Id: 0,
       HotelId: 0,
+      UserId: 0,
       Text: '',
       Rating: 0
     }
@@ -83,6 +91,7 @@ export class HotelDetailsComponent implements OnInit {
     this.reviewToBeUpdated = { 
       Id: 0,
       HotelId: 0,
+      UserId: 0,
       Text: '',
       Rating: 0
     }
@@ -109,16 +118,19 @@ export class HotelDetailsComponent implements OnInit {
 
 
 
-  insertRecord(formReview: NgForm) {  
-    this.reviewService.formDataReview.HotelId = +this.activatedRoute.snapshot.paramMap.get('id');
+  insertRecord(formReview: NgForm) {
 
-    console.log(this.reviewService.formDataReview);  
+    formReview.value.Id = this.reviewToBeUpdated.Id;
+    formReview.value.HotelId = this.hotelId;
+    formReview.value.UserId = this.userLoggedIn.Id;
 
-    this.reviewService.postReview()      
+    console.log(formReview.value);
+
+    this.reviewService.postReview(formReview.value)      
       .toPromise()
       .then(
         response => {    
-          console.log(this.reviewService.formDataReview);
+         // console.log(this.reviewService.formReview);
           this.resetForm(formReview);
           this.getHotelById();   
         },
@@ -136,26 +148,30 @@ export class HotelDetailsComponent implements OnInit {
   updateRecord(formReview: NgForm) {
 
     formReview.value.Id = this.reviewToBeUpdated.Id;
+    formReview.value.HotelId = this.hotelId;
+    formReview.value.UserId = this.userLoggedIn.Id;
 
-    console.log(formReview.value.Id);
+    console.log(formReview.value);
 
-    console.log("am intrat in updateRecord " + formReview.value);
+    this.reviewService.selectedReview = formReview.value;
 
-    this.reviewService.updateReview(formReview.value)
-
+    this.reviewService.updateReview()
       .toPromise()
       .then(response => {   
-        this.resetForm(formReview);
-        this.getHotelById(); 
-        console.log("Update review successfully");
+         this.resetForm(formReview);
+          this.getHotelById();
+          this.reviewService.updateBtnReviewClicked = false;
+          console.log("Update review successfully");
       },
 
         error => {
           console.log(error)
         })
 
-    this.resetForm(formReview);
-    this.reviewService.updateBtnReviewClicked = false;   
+    //this.resetForm(formReview);
+    //this.getHotelById();
+    //this.reviewService.updateBtnReviewClicked = false;
+
   }
 
 

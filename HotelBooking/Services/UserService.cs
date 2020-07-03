@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using HotelBooking.Models;
 using HotelBooking.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelBooking.Services
 {
@@ -19,10 +20,11 @@ namespace HotelBooking.Services
         User AuthenticateFacebook(User model);
         IEnumerable<UserGetModel> GetUsers();
         User GetCurrentUser(HttpContext httpContext);
-        User GetById(int id);
+        User GetById(long id);
         User Create(User user, string password);
         void Update(User user, string password = null);
-        void Delete(int id);
+        void Delete(long id);
+        IEnumerable<UserGetModel> FilterUsersByCountRes(int count);
 
     }
 
@@ -33,7 +35,7 @@ namespace HotelBooking.Services
         private BookingsDbContext _dbContext;
         private readonly AppSettings _appSettings;
 
-        public UserService(IOptions<AppSettings> appSettings, BookingsDbContext dbContext)
+        public UserService(BookingsDbContext context, IOptions<AppSettings> appSettings, BookingsDbContext dbContext)
         {
             _appSettings = appSettings.Value;
             _dbContext = dbContext;
@@ -66,7 +68,7 @@ namespace HotelBooking.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString()),
-                    new Claim(ClaimTypes.Role, user.Role)      
+                    new Claim(ClaimTypes.Role, user.Role)
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -83,7 +85,7 @@ namespace HotelBooking.Services
 
         public User AuthenticateFacebook(User userdata)
         {
-           
+
             var alreadySaved = _dbContext.Users.Where(x => x.Token == userdata.Token).FirstOrDefault();
 
             if (alreadySaved != null)
@@ -100,7 +102,7 @@ namespace HotelBooking.Services
                 PictureURL = userdata.PictureURL,
                 Role = "User"       // by default every user that signs-in with FB has User role
             };
-                   
+
 
             // generez propriul jwt token si nu folosesc token de la FB
             // authentication successful so generate jwt token
@@ -126,10 +128,10 @@ namespace HotelBooking.Services
 
             // authentication successful
             return user;    //user.WithoutPassword();
-            
+
         }
 
-        
+
 
 
 
@@ -138,7 +140,7 @@ namespace HotelBooking.Services
         public IEnumerable<UserGetModel> GetUsers()
         {
             var result = _dbContext.Users.ToList();
-            return result.Select(u => UserGetModel.GetUserModel(u));
+            return result.Select(u => UserGetModel.GetUserModel(u, _dbContext));
 
         }
 
@@ -164,7 +166,7 @@ namespace HotelBooking.Services
 
 
 
-        public User GetById(int id)
+        public User GetById(long id)
         {
             return _dbContext.Users.Find(id);
         }
@@ -247,7 +249,7 @@ namespace HotelBooking.Services
 
 
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             var user = _dbContext.Users.Find(id);
             if (user != null)
@@ -298,6 +300,21 @@ namespace HotelBooking.Services
             }
 
             return true;
+        }
+
+
+
+
+
+        public IEnumerable<UserGetModel> FilterUsersByCountRes(int count)
+        {
+            var result = _dbContext.Users
+                                      .Include(u => u.Reservations)
+                                      .ToList();
+
+            return result.Select(u => UserGetModel.GetUserModel(u, _dbContext))
+                 .Where(u => u.CountReservations >= count);
+
         }
     }
 }

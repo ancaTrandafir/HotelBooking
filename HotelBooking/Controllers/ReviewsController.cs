@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelBooking.Models;
+using HotelBooking.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +32,9 @@ namespace HotelBooking.Controllers
         /// </summary>
         /// <returns>List of reviews.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviews()
+        public ActionResult<IEnumerable<Review>> GetReviews()
         {
-            return await _context.Reviews.ToListAsync();
+            return _context.Reviews.ToList();
         }
 
 
@@ -47,9 +48,9 @@ namespace HotelBooking.Controllers
         /// <returns>Returns the  specified review by id.</returns>
         // GET: /reviews/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Review>> GetReviews(int id)
+        public ActionResult<Review> GetReview(long id)
         {
-            var review = await _context.Reviews.FindAsync(id);
+            var review = _context.Reviews.Find(id);
 
             if (review == null)
             {
@@ -73,16 +74,20 @@ namespace HotelBooking.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutReview(int id, Review review)
+        public IActionResult PutReview(long id, [FromBody] Review review)
         {
+           
+
             if (id != review.Id)
             {
                 return BadRequest();
             }
 
+            _context.Entry(review).State = EntityState.Modified;
+
             try
             {
-                await _context.SaveChangesAsync();
+                 _context.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -113,9 +118,10 @@ namespace HotelBooking.Controllers
         ///
         ///     POST /review
         ///          {
-        ///            "MovieId": 2,
+        ///            "HotelId": 2,
+        ///            "UserId": 2,
         ///            "Text": "Awesome view to the ocean.",
-        ///            "Rating": 9.5
+        ///            "Rating": 9
         ///           }
         ///
         /// </remarks>
@@ -127,10 +133,11 @@ namespace HotelBooking.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Review>> PostReview(Review review)
+        public ActionResult<Review> PostReview(Review review)
         {
+
             _context.Reviews.Add(review);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return CreatedAtAction("GetReview", new { id = review.Id }, review);
         }
@@ -147,7 +154,7 @@ namespace HotelBooking.Controllers
         /// <returns>Returns the deleted review.</returns>
         // DELETE: /reviews/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Review>> DeleteReview(int id)
+        public async Task<ActionResult<Review>> DeleteReview(long id)
         {
             var review = await _context.Reviews.FindAsync(id);
             if (review == null)
@@ -166,7 +173,7 @@ namespace HotelBooking.Controllers
 
 
 
-        private bool ReviewExists(int id)
+        private bool ReviewExists(long id)
         {
             return _context.Reviews.Any(r => r.Id == id);
         }

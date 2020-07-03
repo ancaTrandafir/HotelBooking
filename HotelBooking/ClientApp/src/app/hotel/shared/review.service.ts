@@ -18,8 +18,9 @@ export class ReviewService {
   
 
 
-  postReview() {    
-    return this.http.post(this.rootURL + '/reviews', this.formDataReview);   // POST function returns Observable
+  postReview(formReview: Review) {
+    console.log(formReview);
+    return this.http.post(this.rootURL + '/reviews', formReview);   // POST function returns Observable
 
   }
 
@@ -41,8 +42,9 @@ export class ReviewService {
 
 
 
-  updateReview(formData: Review) {
-      return this.http.put(this.rootURL + '/reviews/' + formData.Id, this.formDataReview);
+  updateReview() {
+    console.log(this.selectedReview);
+    return this.http.put(this.rootURL + '/reviews/' + this.selectedReview.Id, this.selectedReview);
 
   }
 

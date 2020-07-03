@@ -95,7 +95,7 @@ namespace HotelBooking.Controllers
         /// <returns>A hotel with a specific id.</returns>
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public Hotel GetHotelById(int id)
+        public Hotel GetHotelById(long id)
         {
             return hotelService.GetHotelById(id);
         }
@@ -148,8 +148,9 @@ namespace HotelBooking.Controllers
         /// <returns></returns>
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = Role.Admin)]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotel(int id, Hotel hotel)
+        public async Task<IActionResult> PutHotel(long id, Hotel hotel)
         {
             var result = hotelService.Update(id, hotel);
             return Ok(result);
@@ -184,6 +185,7 @@ namespace HotelBooking.Controllers
         // POST: /hotels
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = Role.Admin)]
         [HttpPost]
         public void PostHotel(Hotel hotel)
         {
@@ -199,8 +201,9 @@ namespace HotelBooking.Controllers
 
 
         // DELETE: /hotels/5
+        [Authorize(Roles = Role.Admin)]
         [HttpDelete("{id}")]
-        public IActionResult DeleteHotel(int id)
+        public IActionResult DeleteHotel(long id)
         {
             var result = hotelService.Delete(id);
             if (result == null)
@@ -215,7 +218,7 @@ namespace HotelBooking.Controllers
 
 
 
-        private bool HotelExists(int id)
+        private bool HotelExists(long id)
         {
             return hotelService.GetHotels().Any(h => h.Id == id);
         }

@@ -3,5 +3,17 @@
   <div class="card-body">
     <p>This page can be accessed <u>only by administrators</u>.</p>
   </div>
-  <app-users-list></app-users-list>
+  <br>
+  <button class='btn btn-lg ' style='background-color:transparent;' [routerLink]="['/add-hotel']" routerLinkActive="active">
+    <div style='text-align:center;'><i class="fas fa-tasks">  Manage hotels </i></div>
+  </button>
+  <br>
+  <br>
+  <button class='btn btn-lg ' style='background-color:transparent;' (click)="viewUsers()" routerLinkActive="active">
+    <div style='text-align:center;'><i class="fas fa-tasks"> Manage users </i></div>
+  </button>
+
+  <div *ngIf="btnViewUsersClick == true">
+    <app-users-list ></app-users-list>
+  </div>
 </div>
